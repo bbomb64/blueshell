@@ -12,6 +12,12 @@ Reader::Reader(std::string filename)
   load_buffer();
 }
 
+Reader::Reader(std::vector<u8> chunk)
+{
+  _buffer = chunk;
+  _filesize = chunk.size();
+}
+
 void Reader::load()
 {
   _stream = std::ifstream(_filename, std::ios::ate | std::ios::binary);
@@ -33,7 +39,8 @@ void Reader::load_buffer()
   }
   else 
   {
-    _stream.read(
+    _stream.read
+    (
     reinterpret_cast<char*>(&_buffer[0]), 
     _filesize
     );
@@ -49,9 +56,18 @@ void Reader::change_to(std::string filename)
   load_buffer();
 }
 
+void Reader::change_to(std::vector<u8> chunk)
+{
+  _iter = 0;
+
+  _buffer = chunk;
+  _filesize = chunk.size();
+}
+
 std::string Reader::get_string(int size)
 {
-  std::string ret(
+  std::string ret
+  (
     _buffer.cbegin() + _iter,
     _buffer.cbegin() + _iter + size
   );
@@ -63,7 +79,8 @@ std::string Reader::get_string(int size)
 
 std::vector<u8> Reader::get_vec(int size)
 {
-  std::vector<u8> ret(
+  std::vector<u8> ret
+  (
     _buffer.cbegin() + _iter,
     _buffer.cbegin() + _iter + size + 1
   );
@@ -86,6 +103,11 @@ void Reader::skip(int i)
 void Reader::reset()
 {
   _iter = 0;
+}
+
+void Reader::jump(int to)
+{
+  _iter = to;
 }
 
 int Reader::where()

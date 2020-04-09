@@ -1,16 +1,10 @@
 #include <iostream>
-#include "romheader.h"
+#include "rom.h"
 #include "reader.h"
 #include "util.h"
 
 int main()
 {
-  ROMHeader rom("<rom path>");
-  std::cout << 
-  rom.get_game_title() << 
-  "\n" << 
-  rom.get_gamecode() << 
-  "\n" << 
-  rom.get_region() <<
-  "\n";
+  Reader reader("<path here>");
+  ROM rom(&reader, 0x00000000);
 }

@@ -2,6 +2,7 @@
 #define READER_H
 
 #include "type.h"
+#include "util.h"
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -21,16 +22,20 @@ private:
 public:
   Reader();
   Reader(std::string filename);
+  Reader(std::vector<u8> chunk);
   void change_to(std::string filename);
-  
+  void change_to(std::vector<u8> chunk);
+
   template<class T>
   inline T read() 
   {
-    T ret;
+    T ret = 0;
     for (int i = 0; i < sizeof(T); i++)
     {
       ret += (_buffer[_iter + i] << 8 * i);
     }
+    _iter += sizeof(T);
+
     return ret;
   }
 
@@ -39,9 +44,9 @@ public:
   std::vector<u8>& get_buffer();
   void skip(int i);
   void reset();
+  void jump(int to);
   int where();
   int get_size();
-
 };
 
 #endif

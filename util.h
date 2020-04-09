@@ -2,6 +2,7 @@
 #define UTIL_H
 
 #include <iostream>
+#include <vector>
 
 template <typename T>
 void print_vec(std::vector<T> const &v)
@@ -13,6 +14,28 @@ void print_vec(std::vector<T> const &v)
     printf(", ");
   }
   std::cout << " }" << std::endl;
+};
+
+template <typename T>
+void print_hex(T const &t)
+{
+  printf("0x%x", t);
+  printf("\n");
+};
+
+template <typename T>
+void print(T const &t)
+{
+  std::cout << t << std::endl;
+};
+
+template <typename T>
+bool in_range(T const &t, T const &min, T const &max)
+{
+  return 
+  (
+    (t - min) <= (max - min)
+  );
 };
 
 #endif
