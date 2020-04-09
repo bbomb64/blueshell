@@ -9,7 +9,10 @@ Reader::Reader(std::string filename)
   _filename = filename;
 
   load();
-  load_buffer();
+  if (!load_buffer()) 
+  {
+    exit(EXIT_FAILURE);
+  }
 }
 
 Reader::Reader(std::vector<u8> chunk)
@@ -25,25 +28,26 @@ void Reader::load()
   _stream.seekg(0, std::ios::end);
   _filesize = _stream.tellg();
   _stream.seekg(0, std::ios::beg);
-
-  _buffer.reserve(_filesize);
-  _buffer.resize(_filesize);
 }
 
-void Reader::load_buffer()
+bool Reader::load_buffer()
 {
-  if (_filesize < 1) 
+  if (_filesize < 1 || _filename.substr(_filename.length() - 4) != ".nds") 
   {
-    std::cout << "cannot read empty file" << std::endl;
-    return;
+    std::cout << "cannot read invalid/empty file" << std::endl;
+    return false;
   }
   else 
   {
+    _buffer.reserve(_filesize);
+    _buffer.resize(_filesize);
+
     _stream.read
     (
     reinterpret_cast<char*>(&_buffer[0]), 
     _filesize
     );
+    return true;
   }
 }
 
