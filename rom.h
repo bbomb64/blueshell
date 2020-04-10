@@ -8,6 +8,8 @@
 #include <vector>
 #include "util.h"
 #include "fnt.h"
+#include "fat.h"
+#include "ndsfile.h"
 
 class ROM
 {
@@ -47,6 +49,7 @@ private:
 
   void load_header();
   void load_fnt();
+  void load_fat();
 
 public:
   ROM(Reader* reader, int begins_at);
@@ -93,6 +96,7 @@ public:
   u32 debug_raddr;
 
   FNT fnt;
+  FAT fat;
   
   std::string get_region_string();
 };

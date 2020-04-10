@@ -7,6 +7,7 @@ ROM::ROM(Reader* reader, int begins_at)
 
   load_header();
   load_fnt();
+  load_fat();
 }
 
 void ROM::load_header()
@@ -61,6 +62,11 @@ void ROM::load_header()
 void ROM::load_fnt()
 {
   fnt = FNT(_reader, fnt_offset, fnt_size);
+}
+
+void ROM::load_fat()
+{
+  fat = FAT(_reader, fat_offset, fat_size);
 }
 
 std::string ROM::get_region_string()

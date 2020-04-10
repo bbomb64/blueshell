@@ -12,17 +12,11 @@ int main(int argc, char **argv)
     Reader reader(argv[1]);
     ROM rom(&reader, 0x00000000);
 
-    int id = rom.fnt.file_id_of(argv[2]);
+    NDSFile file = rom.fat.file_from_id(
+      rom.fnt.file_id_of("/player/obj_warp_LZ.bin")
+    );
 
-    if (id <  0)
-    {
-      print("file not found");
-    }
-    else
-    {
-      print(id);
-    }
-
+    print(file.size());
   }
   else 
   {

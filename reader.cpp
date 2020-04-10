@@ -94,6 +94,16 @@ std::vector<u8> Reader::get_vec(int size)
   return ret;
 }
 
+void Reader::replace_vec(std::vector<u8> vec, int at)
+{
+  int address = at;
+  for (u8& byte : vec)
+  {
+    _buffer[address] = byte;
+    address++;
+  }
+}
+
 std::vector<u8>& Reader::get_buffer()
 {
   return _buffer;
