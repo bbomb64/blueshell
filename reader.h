@@ -17,7 +17,7 @@ private:
   int _iter = 0;
 
   void load();
-  void load_buffer();
+  bool load_buffer();
 
 public:
   Reader();
