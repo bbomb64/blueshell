@@ -34,7 +34,7 @@ bool Reader::load_buffer()
 {
   if (_filesize < 1 || _filename.substr(_filename.length() - 4) != ".nds") 
   {
-    std::cout << "cannot read invalid/empty file" << std::endl;
+    print("cannot read invalid/empty file");
     return false;
   }
   else 
