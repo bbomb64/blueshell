@@ -93,7 +93,7 @@ bool FNT::is_end()
 
 void FNT::iterate()
 {
-  for(int i = 0; _num_dir_in_root; i++)
+  for(int i = 0; i < _num_dir_in_root; i++)
   {
     load_sub(i + 0xf000);
   }
