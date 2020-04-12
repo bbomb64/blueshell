@@ -10,7 +10,10 @@ int main(int argc, char **argv)
     Reader reader(argv[1]);
     ROM rom(&reader, 0x00000000);
 
-    print_vec(rom.fat.file_from_id(rom.fnt.file_id_of("/course/A01_1_bgdat.bin")).get_raw());
+    NDSFile file = rom.fat.file_from_id(rom.fnt.file_id_of("/course/A01_1_bgdat.bin"));
+    Reader data(file.get_raw());
+    print_vec(data.get_buffer());
+
   }
   else 
   {

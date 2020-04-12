@@ -18,5 +18,5 @@ NDSFile FAT::file_from_id(int id)
   jump_to_new(id);
   u32 file_addr = _reader->read<u32>();
   u32 file_end = _reader->read<u32>();
-  return NDSFile(_reader, file_addr, file_end - file_addr, id);
+  return NDSFile(_reader, file_addr, (file_end - file_addr) - 1, id);
 }
