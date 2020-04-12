@@ -9,6 +9,7 @@
 #include "util.h"
 #include "fnt.h"
 #include "fat.h"
+#include "ovt.h"
 #include "ndsfile.h"
 
 class ROM
@@ -50,6 +51,8 @@ private:
   void load_header();
   void load_fnt();
   void load_fat();
+  void load_arm7ovt();
+  void load_arm9ovt();
 
 public:
   ROM(Reader* reader, int begins_at);
@@ -97,7 +100,9 @@ public:
 
   FNT fnt;
   FAT fat;
-  
+  OVT arm7ovt;
+  OVT arm9ovt;
+
   std::string get_region_string();
 };
 

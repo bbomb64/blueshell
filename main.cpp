@@ -2,8 +2,6 @@
 #include "rom.h"
 #include "reader.h"
 #include "util.h"
-#include "tinyxml/tinyxml2.h"
-#include "csv/csv.hpp"
 
 int main(int argc, char **argv)
 {
@@ -12,11 +10,7 @@ int main(int argc, char **argv)
     Reader reader(argv[1]);
     ROM rom(&reader, 0x00000000);
 
-    NDSFile file = rom.fat.file_from_id(
-      rom.fnt.file_id_of("/player/obj_warp_LZ.bin")
-    );
-
-    print(file.size());
+    print_vec(rom.fat.file_from_id(rom.fnt.file_id_of("/course/A01_1_bgdat.bin")).get_raw());
   }
   else 
   {

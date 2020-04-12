@@ -12,7 +12,7 @@ void print_vec(std::vector<T> const &v)
   std::cout << "{ ";
   for (auto i : v)
   {
-    printf("%d", i);
+    printf("0x%x", i);
     printf(", ");
   }
   std::cout << " }" << std::endl;

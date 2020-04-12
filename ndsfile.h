@@ -9,14 +9,16 @@ private:
   Reader* _reader;
   int _address;
   int _size;
+  int _id;
 
 public:
   NDSFile() {};
-  NDSFile(Reader* reader, int address, int size) 
+  NDSFile(Reader* reader, int address, int size, int id) 
   {
     _reader = reader;
     _address = address;
     _size = size;
+    _id = id;
   }
 
   int address()
@@ -27,6 +29,11 @@ public:
   int size()
   {
     return _size;
+  }
+
+  int id()
+  {
+    return _id;
   }
 
   std::vector<u8> get_raw()
