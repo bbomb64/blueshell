@@ -5,7 +5,6 @@
 #include <vector>
 #include <string>
 
-
 template <typename T>
 void print_vec(std::vector<T> const &v)
 {

@@ -81,12 +81,12 @@ std::string Reader::get_string(int size)
   return ret;
 }
 
-std::vector<u8> Reader::get_vec(int size)
+std::vector<u8> Reader::get_vec(int size) 
 {
   std::vector<u8> ret
   (
     _buffer.cbegin() + _iter,
-    _buffer.cbegin() + _iter + size + 1
+    _buffer.cbegin() + _iter + size
   );
   
   _iter += size;

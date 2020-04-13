@@ -12,6 +12,7 @@ private:
   int _size;
 
   void jump_to_new(int id);
+  nds_comp_algo guess_compression(int file_addr);
 
 public:
   FAT() {}
