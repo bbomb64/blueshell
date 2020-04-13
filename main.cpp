@@ -11,7 +11,9 @@ int main(int argc, char **argv)
     ROM rom(&reader, 0x00000000);
 
     NDSFile coin = rom.fat.file_from_id(rom.fnt.file_id_of("/enemy/coin.nsbmd"));
-    print_vec(coin.get_raw());
+
+    std::vector<u8> v = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
   } 
   else 
   {

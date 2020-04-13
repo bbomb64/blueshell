@@ -76,6 +76,12 @@ public:
       case nds_comp_algo::YAZ0:
         raw = decompressYaz0(raw);
         break;
+
+      case nds_comp_algo::LZ77_BACKWARDS:
+        break;
+      
+      case nds_comp_algo::NONE:
+        break;
     }
     return raw;
   }
@@ -93,6 +99,12 @@ public:
 
       case nds_comp_algo::YAZ0:
         raw = compressYaz0(raw);
+        break;
+      
+      case nds_comp_algo::LZ77_BACKWARDS:
+        break;
+
+      case nds_comp_algo::NONE:
         break;
     } 
     _reader->replace_vec(raw, _address);
