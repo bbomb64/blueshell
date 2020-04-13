@@ -1,9 +1,5 @@
 #include "fnt.h"
 
-FNT::FNT()
-{
-}
-
 FNT::FNT(Reader* reader, int begins_at, int size)
 {
   _reader = reader;
