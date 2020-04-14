@@ -1,7 +1,7 @@
 #ifndef NDSFILE_H
 #define NDSFILE_H
 
-#include "fnt.h"
+#include <fstream>
 #include "reader.h"
 #include "compressor.h"
 
@@ -20,6 +20,20 @@ private:
   void beginning()
   {
     _reader->jump(_address);
+  }
+
+  std::vector<u8> decompress(std::vector<u8> data)
+  {
+    _compressor->init(data);
+    _compressor->decompress(_compression, false);
+    return _compressor->get_data();
+  }
+
+  std::vector<u8> compress(std::vector<u8> data)
+  {
+    _compressor->init(data);
+    _compressor->compress(_compression, false);
+    return _compressor->get_data();
   }
 
 public:
@@ -65,23 +79,28 @@ public:
   // get (decompressed) data
   std::vector<u8> get_data()
   {
-    std::vector<u8> raw = get_raw();
-
-    _compressor->init(raw);
-    _compressor->decompress(_compression, false);
-    raw = _compressor->get_data();
-
-    return raw;
+    return decompress(get_raw());
   }
 
-  // I don't really know what this does
   void save_raw(std::vector<u8> raw)
   {
-    _compressor->init(raw);
-    _compressor->compress(_compression, false);
-    raw = _compressor->get_data();
+    _reader->replace_vec(compress(raw), _address);
+  }
 
-    _reader->replace_vec(raw, _address);
+  void export_as(std::string filename, bool decomp)
+  {
+    std::ofstream file(filename, std::ios::out | std::ios::binary);
+    std::vector<u8> out;
+    if (!decomp)
+    {
+      out = compress(get_raw());
+    }
+    else
+    {
+      out = decompress(get_raw());
+    }
+    file.write(reinterpret_cast<char*>(&out[0]), out.size() * sizeof(u8));
+    file.close();
   }
 };
 

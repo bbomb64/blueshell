@@ -81,12 +81,12 @@ void ROM::load_arm9ovt()
   arm9ovt = OVT(_reader, ovly_arm9_offset, ovly_arm9_size);
 }
 
-NDSFile ROM::file_from_path(std::string path)
+NDSFile* ROM::file_from_path(std::string path)
 {
   return fat.file_from_id(fnt.file_id_of(path));
 }
 
-NDSFile ROM::file_from_id(int id)
+NDSFile* ROM::file_from_id(int id)
 {
   return fat.file_from_id(id);
 }
