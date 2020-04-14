@@ -4,6 +4,7 @@
 #include "reader.h"
 #include "decompression.h"
 #include "compression.h"
+#include <fstream>
 
 enum nds_comp_algo
 {
@@ -54,12 +55,32 @@ public:
     return _id;
   }
 
-  nds_comp_algo compression()
+  void compress(std::vector<u8> raw)
   {
-    return _compression;
+    switch (_compression)
+    {
+      case nds_comp_algo::LZ77:
+        raw =  compressLZ77(raw, false);
+        break;
+
+      case nds_comp_algo::LZ77_WITH_HEADER:
+        raw = compressLZ77(raw, true);
+        break;
+
+      case nds_comp_algo::YAZ0:
+        raw = compressYaz0(raw);
+        break;
+      
+      case nds_comp_algo::LZ77_BACKWARDS:
+        break;
+
+      case nds_comp_algo::NONE:
+        break;
+    } 
+    _reader->replace_vec(raw, _address);
   }
 
-  std::vector<u8> get_raw()
+  std::vector<u8> decompress()
   {
     beginning();
     std::vector<u8> raw = _reader->get_vec(_size);
@@ -68,6 +89,7 @@ public:
     {
       case nds_comp_algo::LZ77:
         raw =  decompressLZ77(raw, false);
+        break;
 
       case nds_comp_algo::LZ77_WITH_HEADER:
         raw =  decompressLZ77(raw, true);
@@ -86,28 +108,36 @@ public:
     return raw;
   }
 
+  nds_comp_algo compression()
+  {
+    return _compression;
+  }
+
+  std::vector<u8> get_raw()
+  {
+    return decompress();
+  }
+
   void save_raw(std::vector<u8> raw)
   {
-    switch (_compression)
+    compress(raw);
+  }
+
+  void export_as(std::string filename, bool decomp)
+  {
+    std::ofstream file(filename, std::ios::out | std::ios::binary);
+    std::vector<u8> out;
+    if (!decomp)
     {
-      case nds_comp_algo::LZ77:
-        raw =  compressLZ77(raw, false);
-
-      case nds_comp_algo::LZ77_WITH_HEADER:
-        raw = compressLZ77(raw, true);
-        break;
-
-      case nds_comp_algo::YAZ0:
-        raw = compressYaz0(raw);
-        break;
-      
-      case nds_comp_algo::LZ77_BACKWARDS:
-        break;
-
-      case nds_comp_algo::NONE:
-        break;
-    } 
-    _reader->replace_vec(raw, _address);
+      beginning();
+      out = _reader->get_vec(_size);
+    }
+    else
+    {
+      out = decompress();
+    }
+    file.write(reinterpret_cast<char*>(&out[0]), out.size() * sizeof(u8));
+    file.close();
   }
 };
 

@@ -103,6 +103,9 @@ public:
   OVT arm7ovt;
   OVT arm9ovt;
 
+  NDSFile file_from_path(std::string path);
+  NDSFile file_from_id(int id);
+
   std::string get_region_string();
 };
 
