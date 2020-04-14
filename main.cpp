@@ -10,10 +10,8 @@ int main(int argc, char **argv)
     Reader reader(argv[1]);
     ROM rom(&reader, 0x00000000);
 
-    NDSFile coin = rom.fat.file_from_id(rom.fnt.file_id_of("/enemy/coin.nsbmd"));
-
-    std::vector<u8> v = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-
+    NDSFile standard_objects = rom.file_from_path("/BG_ncg/d_2d_A_J_jyotyu_ncg.bin"); // /BG_ncg/d_2d_A_J_jyotyu_ncg.bin"
+    standard_objects.export_as("gfx.bin", true);
   } 
   else 
   {

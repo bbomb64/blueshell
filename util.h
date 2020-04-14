@@ -64,4 +64,27 @@ bool in_range(T const &t, T const &min, T const &max)
   );
 };
 
+inline std::vector<bool> bytes_to_bits(std::vector<u8> const &v)
+{
+  std::vector<bool> ret;
+  for (int j = 0; j < v.size(); j++)
+  {
+    for (int i = 0; i < 8; i++)
+    {
+      ret.push_back((v[j] >> i) & 0x01);
+    }
+  }
+  return ret;
+}
+
+inline u8 bits_to_byte(std::vector<bool> const &v)
+{
+  u8 byte = 0;
+  for (int i = 0; i < 8; i++)
+  {
+    byte += (v[i] << (7 - i));
+  }
+  return byte;
+}
+
 #endif
