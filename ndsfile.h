@@ -1,18 +1,9 @@
 #ifndef NDSFILE_H
 #define NDSFILE_H
 
+#include "fnt.h"
 #include "reader.h"
-#include "decompression.h"
-#include "compression.h"
-
-enum nds_comp_algo
-{
-  NONE,
-  LZ77,
-  LZ77_WITH_HEADER,
-  LZ77_BACKWARDS,
-  YAZ0
-};
+#include "compressor.h"
 
 class NDSFile
 {
@@ -21,7 +12,10 @@ private:
   int _address;
   int _size;
   int _id;
-  nds_comp_algo _compression;
+
+  // compression
+  Compressor* _compressor;
+  nds_comp_type _compression;
 
   void beginning()
   {
@@ -30,13 +24,15 @@ private:
 
 public:
   NDSFile() {};
-  NDSFile(Reader* reader, int address, int size, int id, nds_comp_algo compression) 
+  NDSFile(Reader* reader, u32 address, u32 size, int id)
   {
     _reader = reader;
     _address = address;
     _size = size;
     _id = id;
-    _compression = compression;
+
+    _compressor = new Compressor(get_raw());
+    _compression = _compressor->get_compression_type(false);
   }
 
   int address()
@@ -54,59 +50,37 @@ public:
     return _id;
   }
 
-  nds_comp_algo compression()
+  nds_comp_type compression()
   {
     return _compression;
   }
 
+  // get raw data
   std::vector<u8> get_raw()
   {
     beginning();
-    std::vector<u8> raw = _reader->get_vec(_size);
+    return  _reader->get_vec(_size);
+  }
 
-    switch (_compression)
-    {
-      case nds_comp_algo::LZ77:
-        raw =  decompressLZ77(raw, false);
+  // get (decompressed) data
+  std::vector<u8> get_data()
+  {
+    std::vector<u8> raw = get_raw();
 
-      case nds_comp_algo::LZ77_WITH_HEADER:
-        raw =  decompressLZ77(raw, true);
-        break;
+    _compressor->init(raw);
+    _compressor->decompress(_compression, false);
+    raw = _compressor->get_data();
 
-      case nds_comp_algo::YAZ0:
-        raw = decompressYaz0(raw);
-        break;
-
-      case nds_comp_algo::LZ77_BACKWARDS:
-        break;
-      
-      case nds_comp_algo::NONE:
-        break;
-    }
     return raw;
   }
 
+  // I don't really know what this does
   void save_raw(std::vector<u8> raw)
   {
-    switch (_compression)
-    {
-      case nds_comp_algo::LZ77:
-        raw =  compressLZ77(raw, false);
+    _compressor->init(raw);
+    _compressor->compress(_compression, false);
+    raw = _compressor->get_data();
 
-      case nds_comp_algo::LZ77_WITH_HEADER:
-        raw = compressLZ77(raw, true);
-        break;
-
-      case nds_comp_algo::YAZ0:
-        raw = compressYaz0(raw);
-        break;
-      
-      case nds_comp_algo::LZ77_BACKWARDS:
-        break;
-
-      case nds_comp_algo::NONE:
-        break;
-    } 
     _reader->replace_vec(raw, _address);
   }
 };

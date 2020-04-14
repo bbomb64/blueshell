@@ -6,7 +6,7 @@
 #include <string>
 
 template <typename T>
-void print_vec(std::vector<T> const &v)
+void print_vec(std::vector<T> const& v)
 {
   std::cout << "{ ";
   for (auto i : v)
@@ -16,6 +16,31 @@ void print_vec(std::vector<T> const &v)
   }
   std::cout << " }" << std::endl;
 };
+
+// print a vector in a hex editor style (rows of 16 values)
+template <typename T>
+void print_vec_hex(std::vector<T> const& v)
+{
+  int c = 0;
+  for (auto i : v)
+  {
+    if((c % 16) == 0)
+      printf("\n");
+    printf("%02X ", i);
+    c++;
+  }
+  printf("\n");
+};
+
+// print a vector as a sequence of ascii characters
+template <typename T>
+void print_vec_string(std::vector<T> const& v)
+{
+  for (auto i : v)
+  {
+    std::cout << (char)i;
+  }
+}; 
 
 template <typename T>
 void print_hex(T const &t)

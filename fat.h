@@ -12,13 +12,12 @@ private:
   int _size;
 
   void jump_to_new(int id);
-  nds_comp_algo guess_compression(int file_addr);
 
 public:
   FAT() {}
   FAT(Reader* reader, int begins_at, int size);
 
-  NDSFile file_from_id(int id);
+  NDSFile* file_from_id(int id);
 };
 
 #endif

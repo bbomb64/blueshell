@@ -8,7 +8,7 @@ Reader::Reader(std::string filename)
 {
   _filename = filename;
 
-  load();
+  load_file();
   if (!load_buffer()) 
   {
     exit(EXIT_FAILURE);
@@ -21,7 +21,7 @@ Reader::Reader(std::vector<u8> chunk)
   _filesize = chunk.size();
 }
 
-void Reader::load()
+void Reader::load_file()
 {
   _stream = std::ifstream(_filename, std::ios::ate | std::ios::binary);
 
@@ -56,7 +56,7 @@ void Reader::change_to(std::string filename)
   _filename = filename;
   _iter = 0;
   
-  load();
+  load_file();
   load_buffer();
 }
 

@@ -16,7 +16,7 @@ private:
   int _filesize;
   int _iter = 0;
 
-  void load();
+  void load_file();
   bool load_buffer();
 
 public:
