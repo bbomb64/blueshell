@@ -88,11 +88,18 @@ public:
     _reader->replace_vec(compress(raw), _address);
   }
 
-  void export_as(std::string filename)
+  void export_as(std::string filename, bool decompressed)
   {
     std::ofstream file(filename, std::ios::out | std::ios::binary);
     std::vector<u8> out;
-    out = compress(get_raw());
+    if (decompressed) 
+    {
+      out = decompress(get_raw()); 
+    }
+    else 
+    { 
+      out = get_raw(); 
+    }
 
     file.write((char*)out.data(), out.size() * sizeof(u8));
     file.close();

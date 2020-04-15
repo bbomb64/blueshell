@@ -26,7 +26,6 @@
 #define EXIT(...)                         \
 {                                         \
   WARNING(__VA_ARGS__);                   \
-  system("pause");                        \
   exit(EXIT_FAILURE);                     \
 } while(0)
 

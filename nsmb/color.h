@@ -14,9 +14,10 @@ private:
   }
 
 public:
-  u8 r = 0;
-  u8 g = 0;
-  u8 b = 0;
+  u8 r = 0x00;
+  u8 g = 0x00;
+  u8 b = 0x00;
+  u16 code = 0x00;
 
   Color() {};
   Color(u16 color_code)
