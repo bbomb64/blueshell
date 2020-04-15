@@ -1,5 +1,12 @@
 #include "ovt.h"
 
+OVT::OVT()
+{
+  _reader = nullptr;
+  _begins_at = 0;
+  _size = 0;
+}
+
 OVT::OVT(Reader* reader, int begins_at, int size)
 {
   _reader = reader;

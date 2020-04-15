@@ -1,7 +1,9 @@
+#include "util.h"
 #include "reader.h"
 
 Reader::Reader()
 {
+  _filesize = 0;
 }
 
 Reader::Reader(std::string filename)
@@ -11,7 +13,7 @@ Reader::Reader(std::string filename)
   load_file();
   if (!load_buffer()) 
   {
-    exit(EXIT_FAILURE);
+    EXIT("input file '%s' does not exist\n", filename.c_str());
   }
 }
 
@@ -34,7 +36,6 @@ bool Reader::load_buffer()
 {
   if (_filesize < 1 || _filename.substr(_filename.length() - 4) != ".nds") 
   {
-    print("cannot read invalid/empty file");
     return false;
   }
   else 
@@ -42,11 +43,7 @@ bool Reader::load_buffer()
     _buffer.reserve(_filesize);
     _buffer.resize(_filesize);
 
-    _stream.read
-    (
-    reinterpret_cast<char*>(&_buffer[0]), 
-    _filesize
-    );
+    _stream.read((char*)_buffer.data(), _filesize);
     return true;
   }
 }

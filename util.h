@@ -4,6 +4,33 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "type.h"
+#include "enums.h"
+
+#ifdef _DEBUG
+#define DEBUG(...)                        \
+{                                         \
+  printf("%s -> ", __PRETTY_FUNCTION__);  \
+  printf(__VA_ARGS__);                    \
+} while(0)
+#else
+#define DEBUG(...)
+#endif
+
+#define WARNING(...)                      \
+{                                         \
+  printf("%s -> ", __PRETTY_FUNCTION__);  \
+  printf(__VA_ARGS__);                    \
+} while(0)
+
+#define EXIT(...)                         \
+{                                         \
+  WARNING(__VA_ARGS__);                   \
+  system("pause");                        \
+  exit(EXIT_FAILURE);                     \
+} while(0)
+
+const char* get_comp_string(nds_comp_type compression);
 
 template <typename T>
 void print_vec(std::vector<T> const& v)

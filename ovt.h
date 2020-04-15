@@ -15,7 +15,7 @@ private:
   bool is_end();
 
 public:
-  OVT() {};
+  OVT();
   OVT(Reader* reader, int begins_at, int size);
 
   int get_ram_addr(int overlay_id);

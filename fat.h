@@ -14,7 +14,7 @@ private:
   void jump_to_new(int id);
 
 public:
-  FAT() {}
+  FAT();
   FAT(Reader* reader, int begins_at, int size);
 
   NDSFile* file_from_id(int id);

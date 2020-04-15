@@ -40,7 +40,7 @@ private:
   std::vector<int> _all_file_ids;
 
 public:
-  FNT() {};
+  FNT();
   FNT(Reader* reader, int begins_at, int size);
 
   std::string get_filepath(int id);

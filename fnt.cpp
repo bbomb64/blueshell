@@ -1,5 +1,17 @@
 #include "fnt.h"
 
+FNT::FNT()
+{
+  _reader = nullptr;
+  _begins_at = 0;
+  _size = 0;
+
+  _first_fid = 0;
+  _num_dir = 0;
+  _num_dir_in_root = 0;
+  _sub_offset = 0;
+}
+
 FNT::FNT(Reader* reader, int begins_at, int size)
 {
   _reader = reader;

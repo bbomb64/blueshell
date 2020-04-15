@@ -14,14 +14,13 @@ std::vector<u8>& Compressor::get_data()
 {
   return _data;
 }
-nds_comp_type Compressor::get_compression_type(bool armBinary)
+
+nds_comp_type Compressor::get_compression_type(bool fast)
 {
   if (_reader->get_size() >= 4)
   {
     _reader->jump(0);
     u32 header = _reader->read<u32>();
-
-    printf("%08X\n", header);
 
     // compressed files with header
     switch (header)
@@ -35,43 +34,45 @@ nds_comp_type Compressor::get_compression_type(bool armBinary)
     // try lz77 decompression
     if ((u8)header == _LZ77_SYMBOL)
     {
-      print("lz77\n");
-      if(armBinary ? decompress_lz77_arm(true) : decompress_lz77(true))
+      if(fast)
         return nds_comp_type::LZ77;
+      else
+          if(decompress_lz77())
+            return nds_comp_type::LZ77;
     }
     
     // try backwards lz77 decompression
     if (_reader->get_size() >= 8)
     {
-      if (decompress_backwards_lz77(true))
+      if (fast)
         return nds_comp_type::LZ77_BACKWARDS;
+      else
+        if (decompress_backwards_lz77())
+          return nds_comp_type::LZ77_BACKWARDS;
     }
-
-    print("size >= 4\n");
   }
-
-  print("none\n");
 
   return nds_comp_type::NONE;
 }
 
 // generic lz77 / lzss
-int Compressor::compress_lz77(bool fake)
+int Compressor::compress_lz77()
 {
   std::vector<u8> data;
 
-  if (!fake)
-    _data = data;
+  WARNING("not supported yet!\n");
+
+  _data = data;
   return 0;
 }
-int Compressor::decompress_lz77(bool fake)
+int Compressor::decompress_lz77()
 {
   std::vector<u8> out;
 
   {
     if (_data[0] != 0x10)
     {
-      std::cout << "file is not LZ77 compressed\n";
+      WARNING("file is not LZ77 compressed\n");
       return 0;
     }
 
@@ -80,17 +81,17 @@ int Compressor::decompress_lz77(bool fake)
 
     u32 out_size = 0;
     u32 out_size_safe = 0;
-    u32 comp_size = _data.size();
 
     {
       for (int i = 3; i > 0; i--)
         out_size = (out_size << 8) | _data[i];
-      std::cout << std::hex << "size: " << out_size << "\n";
+
+      DEBUG("size: %X\n", out_size);
 
       if (!out_size)
       {
-        std::cout << "decompressed size is zero\n";
-        return -1;
+        WARNING("decompressed size is zero\n");
+        return 0;
       }
 
       // include padding bytes
@@ -123,8 +124,7 @@ int Compressor::decompress_lz77(bool fake)
 
           if (out_iter + rem > out_size_safe)
           {
-            std::cout << "wrong decompressed size\n";
-            //rem = data.size() - out_iter;
+            WARNING("wrong decompressed size\n");
             return 0;
           }
 
@@ -148,7 +148,7 @@ int Compressor::decompress_lz77(bool fake)
 
     if (out_iter != out_size)
     {
-      std::cout << "decompression didn't reach the end of the data\n";
+      WARNING("decompression didn't reach the end of the data\n");
       return 0;
     }
 
@@ -156,184 +156,72 @@ int Compressor::decompress_lz77(bool fake)
     out.resize(out_size);
   }
 
-  if (!fake)
-    _data = out;
+  _data = out;
   return 1;
 }
 
-int bruh(bool fake, std::vector<u8> _data)
-{
-  std::vector<u8> out;
-
-  {
-    if (_data[0] != 0x10)
-    {
-      std::cout << "file is not LZ77 compressed\n";
-      return 0;
-    }
-
-    u32 out_iter = 0;
-    u32 data_iter = 4;
-
-    u32 out_size = 0;
-    u32 out_size_safe = 0;
-    u32 data_size = _data.size();
-
-    {
-      for (int i = 3; i > 0; i--)
-        out_size = (out_size << 8) | _data[i];
-      std::cout << std::hex << "size: " << out_size << "\n";
-
-      if (!out_size)
-      {
-        std::cout << "decompressed size is zero\n";
-        return -1;
-      }
-
-      // include padding bytes
-      out_size_safe = (out_size + 7) & 0xFFFFFFF8;
-      out.resize(out_size_safe);
-    }
-
-    u8 read = 0;
-    bool done = false;
-
-    while (out_iter < out.size() && !done)
-    {
-      if (data_iter >= _data.size())
-        break;
-
-      read = _data[data_iter++];
-
-      for (u8 i = 0x80; i > 0; i >>= 1)
-      {
-        if ((read & i) != 0)
-        {
-          if (data_iter + 1 >= _data.size()) {
-            done = true;
-            break;
-          }
-          u32 pos = (_data[data_iter] << 8) | _data[data_iter + 1];
-          u32 rem = (pos >> 0xC) + 3;
-
-          data_iter += 2;
-
-          if (out_iter + rem > out_size_safe)
-          {
-            std::cout << "wrong decompressed size\n";
-            return 0;
-          }
-
-          pos = (pos & 0xFFF) + 2;
-          while (rem--)
-          {
-            out[out_iter++] = out[out_iter - pos];
-          }
-        }
-        else
-        {
-          if (data_iter >= _data.size() || out_iter >= out_size)
-          {
-            done = true;
-            break;
-          }
-          out[out_iter++] = _data[data_iter++];
-        }
-
-        printf("out_iter at %X of %X (%X)\n", out_iter, out_size, out_size_safe);
-        printf("data_iter at %X of %X\n", data_iter, _data.size());
-      }
-    }
-
-    if (out_iter != out_size)
-    {
-      std::cout << "decompression didn't reach the end of the data\n";
-      return 0;
-    }
-
-    // restore actual size
-    out.resize(out_size);
-  }
-
-  if (!fake)
-    _data = out;
-  return 1;
-}
-
-// lz77 for arm binaries
-int Compressor::compress_lz77_arm(bool fake)
+// lz77 with header
+int Compressor::compress_lz77_header()
 {
   std::vector<u8> data;
 
-  if (!fake)
-    _data = data;
+  WARNING("not supported yet!\n");
+
+  _data = data;
   return 0;
 }
-int Compressor::decompress_lz77_arm(bool fake)
+int Compressor::decompress_lz77_header()
 {
   std::vector<u8> data;
 
-  if (!fake)
-    _data = data;
+  WARNING("not supported yet!\n");
+
+  _data = data;
   return 0;
 }
 
-// lz77 / lzss with header
-int Compressor::compress_lz77_header(bool fake)
+// backwards lz77
+int Compressor::compress_backwards_lz77()
 {
   std::vector<u8> data;
 
-  if (!fake)
-    _data = data;
+  WARNING("not supported yet!\n");
+  
+  _data = data;
   return 0;
 }
-int Compressor::decompress_lz77_header(bool fake)
+int Compressor::decompress_backwards_lz77()
 {
   std::vector<u8> data;
 
-  if (!fake)
-    _data = data;
-  return 0;
-}
+  WARNING("not supported yet!\n");
 
-// backwards lz77 / lzss
-int Compressor::compress_backwards_lz77(bool fake)
-{
-  std::vector<u8> data;
-
-  if (!fake)
-    _data = data;
-  return 0;
-}
-int Compressor::decompress_backwards_lz77(bool fake)
-{
-  std::vector<u8> data;
-
-  if (!fake)
-    _data = data;
+  _data = data;
   return 0;
 }
 
 // yaz0
-int Compressor::compress_yaz0(bool fake)
+int Compressor::compress_yaz0()
 {
   std::vector<u8> data;
 
-  if (!fake)
-    _data = data;
+  WARNING("not supported yet!\n");
+
+  _data = data;
   return 0;
 }
-int Compressor::decompress_yaz0(bool fake)
+int Compressor::decompress_yaz0()
 {
   std::vector<u8> data;
 
-  if (!fake)
-    _data = data;
+  WARNING("not supported yet!\n");
+
+  _data = data;
   return 0;
 }
 
 // all
-int Compressor::compress(nds_comp_type compression, bool armBinary)
+int Compressor::compress(nds_comp_type compression)
 {
   switch (compression)
   {
@@ -341,21 +229,21 @@ int Compressor::compress(nds_comp_type compression, bool armBinary)
     return 1;
 
   case nds_comp_type::LZ77:
-    return armBinary ? compress_lz77_arm(false) : compress_lz77(false);
+    return compress_lz77();
 
   case nds_comp_type::LZ77_HEADER:
-    return compress_lz77_header(false);
+    return compress_lz77_header();
 
   case nds_comp_type::LZ77_BACKWARDS:
-    return compress_backwards_lz77(false);
+    return compress_backwards_lz77();
 
   case nds_comp_type::YAZ0:
-    return compress_yaz0(false);
+    return compress_yaz0();
   }
 
   return 0;
 }
-int Compressor::decompress(nds_comp_type compression, bool armBinary)
+int Compressor::decompress(nds_comp_type compression)
 {
   switch (compression)
   {
@@ -363,16 +251,16 @@ int Compressor::decompress(nds_comp_type compression, bool armBinary)
     return 1;
 
   case nds_comp_type::LZ77:
-    return armBinary ? decompress_lz77_arm(false) : decompress_lz77(false);
+    return decompress_lz77();
 
   case nds_comp_type::LZ77_HEADER:
-    return decompress_lz77_header(false);
+    return decompress_lz77_header();
 
   case nds_comp_type::LZ77_BACKWARDS:
-    return decompress_backwards_lz77(false);
+    return decompress_backwards_lz77();
 
   case nds_comp_type::YAZ0:
-    return decompress_yaz0(false);
+    return decompress_yaz0();
   }
 
   return 0;
