@@ -7,10 +7,9 @@
 
 static std::vector<u8> decompressLZ77(std::vector<u8> source, bool header)
 {
-  std::vector<u8> dest;
   s32 data_offset = header ? 4 : 0;
   s32 data_length = source[data_offset + 1] | (source[data_offset + 2] << 8) | (source[data_offset + 3] << 16);
-  dest.resize(data_length);
+  std::vector<u8> dest(data_length);
   s32 xin = 4 + data_offset;
   s32 xout = 0;
   u8 d;
@@ -72,30 +71,34 @@ static std::vector<u8> decompressLZ77(std::vector<u8> source, bool header)
 
 static std::vector<u8> decompressYaz0(std::vector<u8> source)
 {
-  u32 leng = (u32)(source[4] << 24 | source[5] << 16 | source[6] << 8 | source[7]);
-  std::vector<u8> Result(leng);
-  int Offs = 16;
-  int dstoffs = 0;
+  u32 dst_size = static_cast<u32>(source[4] << 24 | source[5] << 16 | source[6] << 8 | source[7]);
+  std::vector<u8> dst(dst_size);
+
+  int src_cursor = 16;
+  int dst_cursor = 0;
   while (true)
   {
-    u8 header = source[Offs++];
+    u8 flags = source[src_cursor++];
     for (int i = 0; i < 8; i++)
     {
-      if ((header & 0x80) != 0) Result[dstoffs++] = source[Offs++];
+      if ((flags & 0x80) != 0)
+        dst[dst_cursor++] = source[src_cursor++];
       else
       {
-        u8 b = source[Offs++];
-        int offs = ((b & 0xF) << 8 | source[Offs++]) + 1;
+        u8 b = source[src_cursor++];
+        int offs = ((b & 0xF) << 8 | source[src_cursor++]) + 1;
         int length = (b >> 4) + 2;
-        if (length == 2) length = source[Offs++] + 0x12;
+        if (length == 2)
+          length = source[src_cursor++] + 0x12;
         for (int j = 0; j < length; j++)
         {
-          Result[dstoffs] = Result[dstoffs - offs];
-          dstoffs++;
+          dst[dst_cursor] = dst[dst_cursor - offs];
+          dst_cursor++;
         }
       }
-      if (dstoffs >= leng) return Result;
-      header <<= 1;
+      if (dst_cursor >= dst_size)
+        return dst;
+      flags <<= 1;
     }
   }
 };
