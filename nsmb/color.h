@@ -6,11 +6,15 @@
 class Color
 {
 private:
-  void to_255(u8& r, u8& g, u8& b)
+  void to_255(u16 _color_code)
   {
-    r = (r * 0xFF) / 0x1F;
-    g = (g * 0xFF) / 0x1F;
-    b = (b * 0xFF) / 0x1F;
+    r = ((_color_code) & 0x1F) * (0xFF / 0x1F);
+    g = ((_color_code >> 5) & 0x1F) * (0xFF / 0x1F);
+    b = ((_color_code >> 10) & 0x1F) * (0xFF / 0x1F);
+  }
+
+  void to_short(u8& _r, u8& _g, u8& _b)
+  {
   }
 
 public:
@@ -22,10 +26,8 @@ public:
   Color() {};
   Color(u16 color_code)
   {
-    r = ((color_code) & 0x1F) * 8;
-    g = ((color_code >> 5) & 0x1F) * 8;
-    b = ((color_code >> 10) & 0x1F) * 8;
-    //to_255(r, g, b);
+    code = color_code;
+    to_255(code);
   }
 
   Color(u8 _r, u8 _g, u8 _b)
@@ -33,6 +35,7 @@ public:
     r = _r;
     g = _g;
     b = _b;
+    to_short(r, g, b);
   }
 };
 

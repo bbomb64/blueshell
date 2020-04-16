@@ -1,7 +1,7 @@
 #ifndef ENUMS_H
 #define ENUMS_H
 
-enum class nds_comp_type
+enum class NDSCompType
 {
   NONE,
   LZ77,
@@ -10,10 +10,16 @@ enum class nds_comp_type
   YAZ0
 };
 
-enum class endianness
+enum class Endian
 {
   LITTLE,
   BIG
+};
+
+enum ObjectControlByte
+{
+  END = 0xFF,
+  NEW_LINE = 0xFE  
 };
 
 #endif

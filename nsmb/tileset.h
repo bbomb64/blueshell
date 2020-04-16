@@ -6,41 +6,41 @@
 #include "color.h"
 #include <vector>
 
-struct Tile_8x8 
+struct Palette
+{
+  std::vector<Color> colors;
+
+  Palette() {};
+  Palette(std::vector<Color> colors_v) :
+  colors{colors_v} {};
+};
+
+struct Tile
 {
   std::vector<Color> pixels;
 
-  Tile_8x8() {};
-  Tile_8x8(std::vector<Color> pixels_v) :
+  Tile() {};
+  Tile(std::vector<Color> pixels_v) :
   pixels{pixels_v} {};
 };
 
-struct Tile_16x16
+struct Map16Tile
 {
-  Tile_8x8 top_left;
-  Tile_8x8 top_right;
-  Tile_8x8 bottom_left;
-  Tile_8x8 bottom_right;
+  std::vector<Tile> tiles;
 
-  Tile_16x16() {};
-  Tile_16x16(Tile_8x8 tl, Tile_8x8 tr, Tile_8x8 bl, Tile_8x8 br) :
-  top_left{tl}, top_right{tr}, bottom_left{bl}, bottom_right{br} {};
+  Map16Tile() {};
+  Map16Tile(std::vector<Tile> tiles_v) :
+  tiles{tiles_v} {};
 };
 
 struct Object
 {
   int width = 0;
   int height = 0;
-  std::vector<Tile_16x16> tiles;
-
-  enum control_byte
-  {
-    END = 0xFF,
-    NEW_LINE = 0xFE  
-  };
+  std::vector<Map16Tile> tiles;
 
   Object() {};
-  Object(int w, int h, std::vector<Tile_16x16> tiles_v) : 
+  Object(int w, int h, std::vector<Map16Tile> tiles_v) : 
   width{w}, height{h}, tiles{tiles_v} {};
 };
 
@@ -51,20 +51,31 @@ private:
   Reader _ncl;
   Reader _pnl;
   Reader _unt;
+
+  int _pal_size;
   int _num_tiles;
+  int _num_map16;
+  int _num_objects;
+
+  Palette _pal;
+  std::vector<Tile> _gfx_tiles;
+  std::vector<Map16Tile> _map16_tiles;
   std::vector<Object> _objects;
-  std::vector<Color> pal;
 
   void load_data();
-  Color color_of_pixel(u8 pixel);
   void load_palette();
+  void load_tiles();
+  void load_map16();
+  void load_objects();
 
 public:
   Tileset() {};
   Tileset(NDSFile* ncg_file, NDSFile* ncl_file, NDSFile* pnl_file, NDSFile* unt_file);
-  Tile_16x16 get_16x16_tile(u8 tile);
-  Tile_8x8 get_8x8_tile(u16 index);
 
+  Palette& palette();
+  Tile& get_tile(int i);
+  Map16Tile& get_map16_tile(int i);
+  Object& get_object(int i);
 };
 
 #endif

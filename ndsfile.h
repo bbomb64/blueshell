@@ -17,7 +17,7 @@ private:
 
   // compression
   Compressor* _compressor;
-  nds_comp_type _compression;
+  NDSCompType _compression;
 
   void beginning()
   {
@@ -40,7 +40,6 @@ private:
 
 public:
   NDSFile() {}
-
   NDSFile(Reader* reader, u32 address, u32 size, int id)
   {
     _reader = reader;
@@ -75,7 +74,7 @@ public:
     return _id;
   }
 
-  nds_comp_type& compression()
+  NDSCompType& compression()
   {
     return _compression;
   }

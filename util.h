@@ -30,7 +30,7 @@
   exit(EXIT_FAILURE);                     \
 } while(0)
 
-const char* get_comp_string(nds_comp_type compression);
+const char* get_comp_string(NDSCompType compression);
 
 template <typename T>
 void print_vec(std::vector<T> const& v)
@@ -116,7 +116,7 @@ inline u8 bits_to_byte(std::vector<bool> const& v)
 
 inline void print_color(Color color)
 {
-  printf("(%d, %d, %d)", color.r, color.g, color.b);
+  printf("(%d, %d, %d)\n", color.r, color.g, color.b);
 }
 
 #endif

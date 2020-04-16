@@ -1,22 +1,22 @@
 #include "util.h"
 
-const char* get_comp_string(nds_comp_type compression)
+const char* get_comp_string(NDSCompType compression)
 {
   switch (compression)
   {
-  case nds_comp_type::NONE:
+  case NDSCompType::NONE:
     return "none";
 
-  case nds_comp_type::LZ77:
+  case NDSCompType::LZ77:
     return "lz77";
 
-  case nds_comp_type::LZ77_HEADER:
+  case NDSCompType::LZ77_HEADER:
     return "lz77 with header";
 
-  case nds_comp_type::LZ77_BACKWARDS:
+  case NDSCompType::LZ77_BACKWARDS:
     return "backwards lz77";
 
-  case nds_comp_type::YAZ0:
+  case NDSCompType::YAZ0:
     return "yaz0";
   }
 

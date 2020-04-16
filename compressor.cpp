@@ -16,7 +16,7 @@ std::vector<u8>& Compressor::data()
   return _data;
 }
 
-nds_comp_type Compressor::get_compression_type()
+NDSCompType Compressor::get_compression_type()
 {
   if (_in.size() >= 4)
   {
@@ -27,20 +27,20 @@ nds_comp_type Compressor::get_compression_type()
     switch (header)
     {
     case _LZ77_HEADER:
-      return nds_comp_type::LZ77_HEADER;
+      return NDSCompType::LZ77_HEADER;
     case _YAZ0_HEADER:
-      return nds_comp_type::YAZ0;
+      return NDSCompType::YAZ0;
     }
 
     // try lz77 decompression
     if ((u8)header == _LZ77_SYMBOL)
     {
       if (decompress_lz77())
-        return nds_comp_type::LZ77;
+        return NDSCompType::LZ77;
     }
   }
 
-  return nds_comp_type::NONE;
+  return NDSCompType::NONE;
 }
 
 // lz77
@@ -363,7 +363,7 @@ int Compressor::compress_yaz0()
 int Compressor::decompress_yaz0()
 {
   Reader src_r(_data);
-  src_r.set_endianness(endianness::BIG);
+  src_r.set_Endian(Endian::BIG);
   if (src_r.get_string(4) != "Yaz0")
   {
     WARNING("file is not Yaz0 compressed\n");
@@ -414,46 +414,46 @@ int Compressor::decompress_yaz0()
 }
 
 // all
-int Compressor::compress(nds_comp_type compression)
+int Compressor::compress(NDSCompType compression)
 {
   switch (compression)
   {
-  case nds_comp_type::NONE:
+  case NDSCompType::NONE:
     return 1;
 
-  case nds_comp_type::LZ77:
+  case NDSCompType::LZ77:
     return compress_lz77();
 
-  case nds_comp_type::LZ77_HEADER:
+  case NDSCompType::LZ77_HEADER:
     return compress_lz77(true);
 
-  case nds_comp_type::LZ77_BACKWARDS:
+  case NDSCompType::LZ77_BACKWARDS:
     return compress_backwards_lz77();
 
-  case nds_comp_type::YAZ0:
+  case NDSCompType::YAZ0:
     return compress_yaz0();
   }
 
   return 0;
 }
 
-int Compressor::decompress(nds_comp_type compression)
+int Compressor::decompress(NDSCompType compression)
 {
   switch (compression)
   {
-  case nds_comp_type::NONE:
+  case NDSCompType::NONE:
     return 1;
 
-  case nds_comp_type::LZ77:
+  case NDSCompType::LZ77:
     return decompress_lz77();
 
-  case nds_comp_type::LZ77_HEADER:
+  case NDSCompType::LZ77_HEADER:
     return decompress_lz77(true);
 
-  case nds_comp_type::LZ77_BACKWARDS:
+  case NDSCompType::LZ77_BACKWARDS:
     return decompress_backwards_lz77();
 
-  case nds_comp_type::YAZ0:
+  case NDSCompType::YAZ0:
     return decompress_yaz0();
   }
 

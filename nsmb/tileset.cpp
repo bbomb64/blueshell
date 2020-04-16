@@ -12,43 +12,93 @@ Tileset::Tileset(NDSFile* ncg_file, NDSFile* ncl_file, NDSFile* pnl_file, NDSFil
 
 void Tileset::load_data()
 {
+  _pal_size = _ncl.size() / 2;
   _num_tiles = _ncg.size() / 64;
+  _num_map16 = _pnl.size() / 8;
+  _num_objects = 0;
 }
 
 void Tileset::load_palette()
 {
   _ncl.jump(0);
-  for (int i = 0; i < _ncl.size() / 2; i++)
+  for (int i = 0; i < _pal_size; i++)
   {
-    pal.push_back(Color(_ncl.read<u16>()));
+    _pal.colors.push_back(Color(_ncl.read<u16>()));
   }
 }
 
-Color Tileset::color_of_pixel(u8 pixel)
+void Tileset::load_tiles()
 {
-  return pal[pixel];
-}
-
-Tile_8x8 Tileset::get_8x8_tile(u16 index)
-{
-  std::vector<Color> tile_v;
-  _ncg.jump(index * 64);
-  for (u8 pixel : _ncg.get_vec(64))
+  _ncg.jump(0);
+  for (int i = 0; i < _num_tiles; i++)
   {
-    Color c = color_of_pixel(pixel); 
-    tile_v.push_back(c);
+    for (u8 pixel : _ncl.get_vec(64))
+    {
+      _gfx_tiles[i].pixels.push_back(_pal.colors[pixel]);
+    }
   }
-  return Tile_8x8(tile_v);
 }
 
-Tile_16x16 Tileset::get_16x16_tile(u8 tile)
+void Tileset::load_map16()
 {
-  _pnl.jump(tile * 8);
-  return Tile_16x16
-  (
-    get_8x8_tile(_pnl.read<u16>()),
-    get_8x8_tile(_pnl.read<u16>()),
-    get_8x8_tile(_pnl.read<u16>()),
-    get_8x8_tile(_pnl.read<u16>())
-  );
+  _pnl.jump(0);
+  for (int i = 0; i < _num_map16; i++)
+  {
+    for (int j = 0; j < 4; j++)
+    {
+      _map16_tiles[i].tiles.push_back(_gfx_tiles[_pnl.read<u16>()]);
+    }
+  }
+}
+
+void Tileset::load_objects()
+{
+  // first load the number of objects.
+  _unt.jump(0);
+  for (u8 byte : _unt.get_buffer())
+  {
+    if (byte == ObjectControlByte::END) { _num_objects++; }
+  }
+
+  // now load the vectors
+  _unt.jump(0);
+  for (int i = 0; i < _num_objects; i++)
+  {
+    u8 byte = 0x00;
+    Object obj;
+    while (byte != ObjectControlByte::END)
+    {
+      byte = _unt.read<u8>();
+      if (byte != ObjectControlByte::NEW_LINE)
+      {
+        obj.width++;
+        obj.tiles.push_back(_map16_tiles[byte]);
+      }
+      else
+      {
+        obj.height++;
+      }
+    }
+    _objects.push_back(obj);
+  }
+}
+
+Palette& Tileset::palette()
+{
+  return _pal;
+}
+
+Tile& Tileset::get_tile(int i)
+{
+  return _gfx_tiles[i];
+}
+
+Map16Tile& Tileset::get_map16_tile(int i)
+{
+  return _map16_tiles[i];
+}
+
+Object& Tileset::get_object(int i)
+{
+  return _objects[i];
 }

@@ -141,7 +141,7 @@ int Reader::size()
   return _filesize;
 }
 
-void Reader::set_endianness(endianness endianess)
+void Reader::set_Endian(Endian endianess)
 {
-  _endianness = endianess;
+  _Endian = endianess;
 }

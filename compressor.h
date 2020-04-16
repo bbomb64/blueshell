@@ -23,7 +23,7 @@ public:
   void init(std::vector<u8> chunk);
 
   std::vector<u8>& data();
-  nds_comp_type get_compression_type();
+  NDSCompType get_compression_type();
 
   int compress_lz77(bool header = false);
   int decompress_lz77(bool header = false);
@@ -34,8 +34,8 @@ public:
   int compress_yaz0();
   int decompress_yaz0();
 
-  int compress(nds_comp_type compression);
-  int decompress(nds_comp_type compression);
+  int compress(NDSCompType compression);
+  int decompress(NDSCompType compression);
 };
 
 #endif
