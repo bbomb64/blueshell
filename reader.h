@@ -16,7 +16,7 @@ private:
   std::vector<u8> _buffer;
   int _filesize;
   int _iter = 0;
-  endianness _endianness = endianness::LITTLE_ENDIAN;
+  endianness _endianness = endianness::LITTLE;
 
   void load_file();
   bool load_buffer();
@@ -34,7 +34,7 @@ public:
   inline T read()
   {
     T ret = 0;
-    if (_endianness == endianness::LITTLE_ENDIAN)
+    if (_endianness == endianness::LITTLE)
     {
       for (int i = 0; i < sizeof(T); i++)
       {

@@ -53,9 +53,11 @@ private:
   Reader _unt;
   int _num_tiles;
   std::vector<Object> _objects;
+  std::vector<Color> pal;
 
   void load_data();
   Color color_of_pixel(u8 pixel);
+  void load_palette();
 
 public:
   Tileset() {};

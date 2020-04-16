@@ -20,9 +20,7 @@ int main(int argc, char **argv)
   NDSFile* standard_map16 = rom.file_from_path("/BG_pnl/d_2d_PA_A_J_jyotyu.bin");
   NDSFile* standard_objects = rom.file_from_path("/BG_unt/A_J_jyotyu.bin");
   Tileset tileset(standard_tiles, standard_palette, standard_map16, standard_objects);
-  print_vec_hex(standard_palette->get_data());
 
-  print_hex(standard_palette->compression());
   Gtk::Window window;
   window.set_title("Blue Shell Map 16 viewer");
   window.resize(800, 600);

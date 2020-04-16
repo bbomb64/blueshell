@@ -12,8 +12,8 @@ enum class nds_comp_type
 
 enum class endianness
 {
-  LITTLE_ENDIAN,
-  BIG_ENDIAN
+  LITTLE,
+  BIG
 };
 
 #endif

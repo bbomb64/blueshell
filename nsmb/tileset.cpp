@@ -6,6 +6,8 @@ Tileset::Tileset(NDSFile* ncg_file, NDSFile* ncl_file, NDSFile* pnl_file, NDSFil
   _ncl = Reader(ncl_file->get_data());
   _pnl = Reader(pnl_file->get_data());
   _unt = Reader(unt_file->get_data());
+  load_data();
+  load_palette();
 }
 
 void Tileset::load_data()
@@ -13,12 +15,18 @@ void Tileset::load_data()
   _num_tiles = _ncg.size() / 64;
 }
 
+void Tileset::load_palette()
+{
+  _ncl.jump(0);
+  for (int i = 0; i < _ncl.size() / 2; i++)
+  {
+    pal.push_back(Color(_ncl.read<u16>()));
+  }
+}
+
 Color Tileset::color_of_pixel(u8 pixel)
 {
-  _ncl.jump(pixel);
-  u16 color = _ncl.read<u16>();
-  print_hex(color);
-  return Color(color);
+  return pal[pixel];
 }
 
 Tile_8x8 Tileset::get_8x8_tile(u16 index)

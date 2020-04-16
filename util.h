@@ -6,6 +6,7 @@
 #include <string>
 #include "type.h"
 #include "enums.h"
+#include "nsmb/color.h"
 
 #ifdef _DEBUG
 #define DEBUG(...)                        \
@@ -111,6 +112,11 @@ inline u8 bits_to_byte(std::vector<bool> const& v)
     byte += (v[i] << (7 - i));
   }
   return byte;
+}
+
+inline void print_color(Color color)
+{
+  printf("(%d, %d, %d)", color.r, color.g, color.b);
 }
 
 #endif
