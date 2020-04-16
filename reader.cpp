@@ -11,7 +11,7 @@ Reader::Reader(std::string filename)
   _filename = filename;
 
   load_file();
-  if (!load_buffer()) 
+  if (!load_buffer())
   {
     EXIT("input file '%s' does not exist\n", filename.c_str());
   }
@@ -34,11 +34,11 @@ void Reader::load_file()
 
 bool Reader::load_buffer()
 {
-  if (_filesize < 1 || _filename.substr(_filename.length() - 4) != ".nds") 
+  if (_filesize < 1 || _filename.substr(_filename.length() - 4) != ".nds")
   {
     return false;
   }
-  else 
+  else
   {
     _buffer.reserve(_filesize);
     _buffer.resize(_filesize);
@@ -52,7 +52,7 @@ void Reader::change_to(std::string filename)
 {
   _filename = filename;
   _iter = 0;
-  
+
   load_file();
   load_buffer();
 }
@@ -63,6 +63,16 @@ void Reader::change_to(std::vector<u8> chunk)
 
   _buffer = chunk;
   _filesize = chunk.size();
+}
+
+u8& Reader::at(int index)
+{
+  return _buffer[index];
+}
+
+u8& Reader::operator[](int index)
+{
+  return _buffer[index];
 }
 
 std::string Reader::get_string(int size)
@@ -78,14 +88,14 @@ std::string Reader::get_string(int size)
   return ret;
 }
 
-std::vector<u8> Reader::get_vec(int size) 
+std::vector<u8> Reader::get_vec(int size)
 {
   std::vector<u8> ret
   (
     _buffer.cbegin() + _iter,
     _buffer.cbegin() + _iter + size
   );
-  
+
   _iter += size;
 
   return ret;
@@ -126,7 +136,7 @@ int Reader::where()
   return _iter;
 }
 
-int Reader::get_size() 
+int Reader::size()
 {
   return _filesize;
 }

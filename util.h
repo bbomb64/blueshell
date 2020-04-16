@@ -7,6 +7,12 @@
 #include "type.h"
 #include "enums.h"
 
+#ifdef WIN32
+#define pause() system("pause")
+#else
+#define pause()
+#endif
+
 #ifdef _DEBUG
 #define DEBUG(...)                        \
 {                                         \
@@ -26,6 +32,7 @@
 #define EXIT(...)                         \
 {                                         \
   WARNING(__VA_ARGS__);                   \
+  pause();                                \
   exit(EXIT_FAILURE);                     \
 } while(0)
 
@@ -45,12 +52,12 @@ void print_vec(std::vector<T> const& v)
 
 // print a vector in a hex editor style (rows of 16 values)
 template <typename T>
-void print_vec_hex(std::vector<T> const& v)
+void print_vec_hex(std::vector<T> const& v, u32 width = 16)
 {
-  int c = 0;
+  u32 c = 0;
   for (auto i : v)
   {
-    if((c % 16) == 0)
+    if ((c % width) == 0 && c != 0)
       printf("\n");
     printf("%02X ", i);
     c++;
@@ -66,31 +73,31 @@ void print_vec_string(std::vector<T> const& v)
   {
     std::cout << (char)i;
   }
-}; 
+};
 
 template <typename T>
-void print_hex(T const &t)
+void print_hex(T const& t)
 {
   printf("0x%x", t);
   printf("\n");
 };
 
 template <typename T>
-void print(T const &t)
+void print(T const& t)
 {
   std::cout << t << std::endl;
 };
 
 template <typename T>
-bool in_range(T const &t, T const &min, T const &max)
+bool in_range(T const& t, T const& min, T const& max)
 {
-  return 
-  (
+  return
+    (
     (t - min) <= (max - min)
-  );
+      );
 };
 
-inline std::vector<bool> bytes_to_bits(std::vector<u8> const &v)
+inline std::vector<bool> bytes_to_bits(std::vector<u8> const& v)
 {
   std::vector<bool> ret;
   for (int j = 0; j < v.size(); j++)
@@ -103,7 +110,7 @@ inline std::vector<bool> bytes_to_bits(std::vector<u8> const &v)
   return ret;
 }
 
-inline u8 bits_to_byte(std::vector<bool> const &v)
+inline u8 bits_to_byte(std::vector<bool> const& v)
 {
   u8 byte = 0;
   for (int i = 0; i < 8; i++)

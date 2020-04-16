@@ -26,8 +26,10 @@ public:
   void change_to(std::string filename);
   void change_to(std::vector<u8> chunk);
 
+  std::vector<u8>& get_buffer();
+
   template<class T>
-  inline T read() 
+  inline T read()
   {
     T ret = 0;
     for (int i = 0; i < sizeof(T); i++)
@@ -39,15 +41,19 @@ public:
     return ret;
   }
 
+  u8& at(int index);
+  u8& operator[](int index);
+
   std::string get_string(int size);
   std::vector<u8> get_vec(int size);
   void replace_vec(std::vector<u8> vec, int at);
-  std::vector<u8>& get_buffer();
-  void skip(int i);
+
   void reset();
+  void skip(int i);
   void jump(int to);
   int where();
-  int get_size();
+
+  int size();
 };
 
 #endif
