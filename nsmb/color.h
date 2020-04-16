@@ -22,10 +22,10 @@ public:
   Color() {};
   Color(u16 color_code)
   {
-    r = ((color_code) & 0x1F);
-    g = ((color_code >> 5) & 0x1F);
-    b = ((color_code >> 10) & 0x1F);
-    to_255(r, g, b);
+    r = ((color_code) & 0x1F) * 8;
+    g = ((color_code >> 5) & 0x1F) * 8;
+    b = ((color_code >> 10) & 0x1F) * 8;
+    //to_255(r, g, b);
   }
 
   Color(u8 _r, u8 _g, u8 _b)

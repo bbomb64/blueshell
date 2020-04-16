@@ -10,20 +10,21 @@ Tileset::Tileset(NDSFile* ncg_file, NDSFile* ncl_file, NDSFile* pnl_file, NDSFil
 
 void Tileset::load_data()
 {
-  _num_tiles = _ncg.get_size() / 64;
+  _num_tiles = _ncg.size() / 64;
 }
 
 Color Tileset::color_of_pixel(u8 pixel)
 {
   _ncl.jump(pixel);
   u16 color = _ncl.read<u16>();
+  print_hex(color);
   return Color(color);
 }
 
 Tile_8x8 Tileset::get_8x8_tile(u16 index)
 {
   std::vector<Color> tile_v;
-  _ncg.jump(index);
+  _ncg.jump(index * 64);
   for (u8 pixel : _ncg.get_vec(64))
   {
     Color c = color_of_pixel(pixel); 

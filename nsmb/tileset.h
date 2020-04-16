@@ -56,11 +56,13 @@ private:
 
   void load_data();
   Color color_of_pixel(u8 pixel);
-  Tile_8x8 get_8x8_tile(u16 index);
 
 public:
+  Tileset() {};
   Tileset(NDSFile* ncg_file, NDSFile* ncl_file, NDSFile* pnl_file, NDSFile* unt_file);
   Tile_16x16 get_16x16_tile(u8 tile);
+  Tile_8x8 get_8x8_tile(u16 index);
+
 };
 
 #endif

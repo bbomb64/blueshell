@@ -7,12 +7,6 @@
 #include "type.h"
 #include "enums.h"
 
-#ifdef WIN32
-#define pause() system("pause")
-#else
-#define pause()
-#endif
-
 #ifdef _DEBUG
 #define DEBUG(...)                        \
 {                                         \
@@ -32,7 +26,6 @@
 #define EXIT(...)                         \
 {                                         \
   WARNING(__VA_ARGS__);                   \
-  pause();                                \
   exit(EXIT_FAILURE);                     \
 } while(0)
 

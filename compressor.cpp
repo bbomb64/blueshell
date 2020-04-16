@@ -238,7 +238,10 @@ int Compressor::decompress_backwards_lz77()
 // yaz0
 int Compressor::compress_yaz0()
 {
-  s32 src_length = _data.size();
+  WARNING("Not supported yet!\n");
+  
+  return 0;
+  /*s32 src_length = _data.size();
   u8* data8 = _data.data();
 
   std::vector<u8> result(src_length + src_length / 8 + 0x10);
@@ -246,7 +249,7 @@ int Compressor::compress_yaz0()
   u32* dest32 = reinterpret_cast<u32*>(result.data());
 
   dest32[0] = _YAZ0_HEADER;
-  dest32[1] = _byteswap_ulong(src_length);
+  dest32[1] = 0;
   dest32[2] = 0;
   dest32[3] = 0;
 
@@ -354,7 +357,7 @@ int Compressor::compress_yaz0()
 
   _data = result;
 
-  return 1;
+  return 1;*/
 }
 
 int Compressor::decompress_yaz0()
