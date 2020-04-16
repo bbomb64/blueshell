@@ -127,12 +127,24 @@ public:
     _raw = raw;
   }
 
+  // takes no arguments, saves whatever's in _raw back to rom. still size checks for saftey
+  // this probably won't be used often since NDSFile doesn't have write operations other than 
+  // compressing and decompressing, but it's still nice to have.
+  void save_to_rom()
+  {
+    if (_raw.size() > _size)
+    {
+      EXIT("file seems to have grown, canceling save. have you forgotten to compress? aborting operation\n");
+    }
+    _reader->replace_vec(_raw, _address);
+  }
+
   // totally not safe, you must also change the fat's addresses
   void save_to_rom(std::vector<u8> raw)
   {
     if (raw.size() > _size)
     {
-      EXIT("replacing a file bigger than the original is dangerous");
+      EXIT("replacing a file bigger than the original is dangerous. aborting operation\n");
     }
     _reader->replace_vec(raw, _address);
   }
