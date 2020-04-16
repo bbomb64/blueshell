@@ -6,7 +6,7 @@
 
 int main(int argc, char **argv)
 {
-  Reader reader("/home/richards/Downloads/nsmb.nds");
+  Reader reader(argv[1]);
   ROM rom(&reader, 0x00000000);
 
   NDSFile* standard_tiles = rom.file_from_path("/BG_ncg/d_2d_A_J_jyotyu_ncg.bin"); // /BG_ncg/d_2d_A_J_jyotyu_ncg.bin"
