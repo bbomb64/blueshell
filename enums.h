@@ -10,4 +10,10 @@ enum class nds_comp_type
   YAZ0
 };
 
+enum class endianness
+{
+  LITTLE_ENDIAN,
+  BIG_ENDIAN
+};
+
 #endif

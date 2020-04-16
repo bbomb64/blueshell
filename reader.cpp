@@ -140,3 +140,8 @@ int Reader::size()
 {
   return _filesize;
 }
+
+void Reader::set_endianness(endianness endianess)
+{
+  _endianness = endianess;
+}

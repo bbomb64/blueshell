@@ -362,50 +362,46 @@ int Compressor::compress_yaz0()
 
 int Compressor::decompress_yaz0()
 {
-  u32* data32 = reinterpret_cast<u32*>(_data.data());
-  u8* data8 = _data.data();
-
-  if (data32[0] != _YAZ0_HEADER)
+  Reader src_r(_data);
+  src_r.set_endianness(endianness::BIG_ENDIAN);
+  if (src_r.get_string(4) != "Yaz0")
   {
     WARNING("file is not Yaz0 compressed\n");
     return 0;
   }
 
-  u32 dest_size = static_cast<u32>(data8[4] << 24 | data8[5] << 16 | data8[6] << 8 | data8[7]);
+  src_r.jump(4);
+  u32 dest_size = src_r.read<u32>();
   std::vector<u8> dest(dest_size);
 
-  u8* dest8 = dest.data();
-
-  int src_cursor = 16;
-  int dest_cursor = 0;
-  bool done = false;
-  while (!done)
+  int src_iter = 16;
+  int dest_iter = 0;
+  while (true)
   {
-    u8 flags = data8[src_cursor++];
+    u8 flags = _data[src_iter++];
     for (int i = 0; i < 8; i++)
     {
       if ((flags & 0x80) != 0)
       {
-        dest8[dest_cursor++] = data8[src_cursor++];
+        dest[dest_iter++] = _data[src_iter++];
       }
       else
       {
-        u8 b = data8[src_cursor++];
-        int offs = ((b & 0xF) << 8 | data8[src_cursor++]) + 1;
+        u8 b = _data[src_iter++];
+        int offs = ((b & 0xF) << 8 | _data[src_iter++]) + 1;
         int length = (b >> 4) + 2;
         if (length == 2)
         {
-          length = data8[src_cursor++] + 0x12;
+          length = _data[src_iter++] + 0x12;
         }
         for (int j = 0; j < length; j++)
         {
-          dest8[dest_cursor] = dest8[dest_cursor - offs];
-          dest_cursor++;
+          dest[dest_iter] = dest[dest_iter - offs];
+          dest_iter++;
         }
       }
-      if (dest_cursor >= dest_size)
+      if (dest_iter >= dest_size)
       {
-        done = true;
         break;
       }
       flags <<= 1;

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include "enums.h"
 
 class Reader
 {
@@ -15,6 +16,7 @@ private:
   std::vector<u8> _buffer;
   int _filesize;
   int _iter = 0;
+  endianness _endianness = endianness::LITTLE_ENDIAN;
 
   void load_file();
   bool load_buffer();
@@ -32,9 +34,20 @@ public:
   inline T read()
   {
     T ret = 0;
-    for (int i = 0; i < sizeof(T); i++)
+    if (_endianness == endianness::LITTLE_ENDIAN)
     {
-      ret += (_buffer[_iter + i] << 8 * i);
+      for (int i = 0; i < sizeof(T); i++)
+      {
+        ret += (_buffer[_iter + i] << 8 * i);
+      }
+    }
+    else
+    {
+      for (int i = 0; i < sizeof(T); i++)
+      {
+        int j = (sizeof(T) - i) - 1;
+        ret += (_buffer[_iter + i] << 8 * j);
+      }
     }
     _iter += sizeof(T);
 
@@ -54,6 +67,7 @@ public:
   int where();
 
   int size();
+  void set_endianness(endianness endianness);
 };
 
 #endif
