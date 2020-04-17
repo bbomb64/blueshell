@@ -75,7 +75,7 @@ void Tileset::load_tiles()
       std::vector<Color> t;
       for (u8 pixel : _ncg.get_vec(64))
       {
-        t.push_back(_palettes[0].colors[pixel]);
+        t.push_back(pal.colors[pixel]);
       }
       _gfx_tiles.push_back(t); 
     }

@@ -3,7 +3,6 @@
 #include "reader.h"
 #include "util.h"
 #include "nsmb/tileset.h"
-#include <png++/png.hpp>
 
 int main(int argc, char **argv)
 {
