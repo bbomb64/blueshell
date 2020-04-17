@@ -22,4 +22,11 @@ enum ObjectControlByte
   NEW_LINE = 0xFE  
 };
 
+enum TilesetOffset
+{
+  TILESET0,
+  TILESET1,
+  TILESET2
+};
+
 #endif

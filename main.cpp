@@ -14,10 +14,12 @@ int main(int argc, char **argv)
   NDSFile* standard_map16 = rom.file_from_path("/BG_pnl/d_2d_PA_A_J_jyotyu.bin");
   NDSFile* standard_objects = rom.file_from_path("/BG_unt/A_J_jyotyu.bin");
 
-  Tileset tileset(standard_tiles, standard_palette, standard_map16, standard_objects);
+  Tileset tileset(standard_tiles, standard_palette, standard_map16, standard_objects, TilesetOffset::TILESET1);
 
-  Palette pal = tileset.palette();
   Tile t = tileset.get_tile(1);
-  Map16Tile block = tileset.get_map16_tile(4); 
 
+  for(Color c : t.pixels)
+  {
+    print_color(c);
+  }
 }

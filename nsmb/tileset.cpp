@@ -1,11 +1,12 @@
 #include "tileset.h"
 
-Tileset::Tileset(NDSFile* ncg_file, NDSFile* ncl_file, NDSFile* pnl_file, NDSFile* unt_file)
+Tileset::Tileset(NDSFile* ncg_file, NDSFile* ncl_file, NDSFile* pnl_file, NDSFile* unt_file, TilesetOffset tileset_num)
 {
   _ncg = Reader(ncg_file->get_data()); //automatically decompresses
   _ncl = Reader(ncl_file->get_data());
   _pnl = Reader(pnl_file->get_data());
   _unt = Reader(unt_file->get_data());
+  _tileset_num = tileset_num;
 
   load_data();
   load_palette();
@@ -21,6 +22,25 @@ void Tileset::load_data()
   _num_tiles = _ncg.size() / 64;
   _num_map16 = _pnl.size() / 8;
   _num_objects = 0;
+
+  switch (_tileset_num)
+  {
+  case TilesetOffset::TILESET0:
+    _map16_offset = 0;
+    break;
+    
+  case TilesetOffset::TILESET1:
+    _map16_offset = 192;
+    break;
+  
+  case TilesetOffset::TILESET2:
+    _map16_offset = 640;
+    break;
+
+  default:
+    _map16_offset = 0;
+    break;
+  }
 }
 
 // load palette with colors (RGB24-ish)
@@ -56,7 +76,7 @@ void Tileset::load_map16()
   {
     for (int j = 0; j < 4; j++)
     {
-      u16 tile_index = _pnl.read<u16>() & 0xFF - 192;
+      u16 tile_index = _pnl.read<u16>() & 0x3FF - _map16_offset;
       print_hex(tile_index);
       _map16_tiles[i].tiles.push_back(_gfx_tiles[tile_index]);
     }

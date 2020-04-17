@@ -55,7 +55,9 @@ private:
   int _pal_size;
   int _num_tiles;
   int _num_map16;
-  int _num_objects;
+  int _num_objects; 
+  TilesetOffset _tileset_num;
+  int _map16_offset;
 
   Palette _pal;
   std::vector<Tile> _gfx_tiles;
@@ -70,7 +72,7 @@ private:
 
 public:
   Tileset() {};
-  Tileset(NDSFile* ncg_file, NDSFile* ncl_file, NDSFile* pnl_file, NDSFile* unt_file);
+  Tileset(NDSFile* ncg_file, NDSFile* ncl_file, NDSFile* pnl_file, NDSFile* unt_file, TilesetOffset tileset_num);
 
   Palette& palette();
   Tile& get_tile(int i);
