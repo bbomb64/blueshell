@@ -113,4 +113,20 @@ inline u8 bits_to_byte(std::vector<bool> const& v)
   return byte;
 }
 
+template <typename T>
+inline T swap_endianness(T v)
+{
+  std::vector<u8> bytes(sizeof(T));
+  *reinterpret_cast<T*>(bytes.data()) = v;
+
+  T ret = 0;
+  for (int i = 0; i < sizeof(T); i++)
+  {
+    int j = (sizeof(T) - i) - 1;
+    ret += (bytes[i] << 8 * j);
+  }
+
+  return ret;
+}
+
 #endif
