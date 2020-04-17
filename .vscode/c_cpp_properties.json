@@ -4,6 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
+                "/usr/include/png++",
                 "/usr/include/gtkmm-3.0",
                 "/usr/lib/gtkmm-3.0/include",
                 "/usr/include/atkmm-1.6",

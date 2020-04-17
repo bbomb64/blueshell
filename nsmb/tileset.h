@@ -48,33 +48,33 @@ class Tileset
 {
 private:
   Reader _ncg;
-  Reader _ncl;
+  std::vector<Reader> _ncl;
   Reader _pnl;
   Reader _unt;
 
-  int _pal_size;
+  int _num_pal;
   int _num_tiles;
   int _num_map16;
   int _num_objects; 
   TilesetOffset _tileset_num;
   int _map16_offset;
 
-  Palette _pal;
+  std::vector<Palette> _palettes;
   std::vector<Tile> _gfx_tiles;
   std::vector<Map16Tile> _map16_tiles;
   std::vector<Object> _objects;
 
   void load_data();
-  void load_palette();
+  void load_palettes(std::vector<NDSFile*> pal_files);
   void load_tiles();
   void load_map16();
   void load_objects();
 
 public:
   Tileset() {};
-  Tileset(NDSFile* ncg_file, NDSFile* ncl_file, NDSFile* pnl_file, NDSFile* unt_file, TilesetOffset tileset_num);
+  Tileset(NDSFile* ncg_file, std::vector<NDSFile*> ncl_tiles, NDSFile* pnl_file, NDSFile* unt_file, TilesetOffset tileset_num);
 
-  Palette& palette();
+  Palette& get_palette(int i);
   Tile& get_tile(int i);
   Map16Tile& get_map16_tile(int i);
   Object& get_object(int i);
