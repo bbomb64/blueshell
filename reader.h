@@ -60,6 +60,7 @@ public:
   std::string get_string(int size);
   std::vector<u8> get_vec(int size);
   void replace_vec(std::vector<u8> vec, int at);
+  std::vector<u8> read_until(u8 stop);
 
   void reset();
   void skip(int i);

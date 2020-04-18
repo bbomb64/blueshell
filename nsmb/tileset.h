@@ -11,17 +11,16 @@ struct Palette
   std::vector<Color> colors;
 
   Palette() {};
-  Palette(std::vector<Color> colors_v) :
-  colors{colors_v} {};
 };
 
 struct Tile
 {
   std::vector<Color> pixels;
+  int use_pal;
+  bool h_flip;
+  bool v_flip;
 
   Tile() {};
-  Tile(std::vector<Color> pixels_v) :
-  pixels{pixels_v} {};
 };
 
 struct Map16Tile
@@ -29,8 +28,6 @@ struct Map16Tile
   std::vector<Tile> tiles;
 
   Map16Tile() {};
-  Map16Tile(std::vector<Tile> tiles_v) :
-  tiles{tiles_v} {};
 };
 
 struct Object
@@ -40,8 +37,6 @@ struct Object
   std::vector<Map16Tile> tiles;
 
   Object() {};
-  Object(int w, int h, std::vector<Map16Tile> tiles_v) : 
-  width{w}, height{h}, tiles{tiles_v} {};
 };
 
 class Tileset
@@ -51,6 +46,7 @@ private:
   std::vector<Reader> _ncl;
   Reader _pnl;
   Reader _unt;
+  Reader _unt_hd;
 
   int _num_pal;
   int _num_tiles;
@@ -72,7 +68,15 @@ private:
 
 public:
   Tileset() {};
-  Tileset(NDSFile* ncg_file, std::vector<NDSFile*> ncl_tiles, NDSFile* pnl_file, NDSFile* unt_file, TilesetOffset tileset_num);
+  Tileset
+  (
+    NDSFile* ncg_file, 
+    std::vector<NDSFile*> ncl_tiles, 
+    NDSFile* pnl_file, 
+    NDSFile* unt_file, 
+    NDSFile* unt_hd_file, 
+    TilesetOffset tileset_num
+  );
 
   Palette& get_palette(int i);
   Tile& get_tile(int i);

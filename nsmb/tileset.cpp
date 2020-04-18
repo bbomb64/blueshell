@@ -1,10 +1,19 @@
 #include "tileset.h"
 
-Tileset::Tileset(NDSFile* ncg_file, std::vector<NDSFile*> ncl_files, NDSFile* pnl_file, NDSFile* unt_file, TilesetOffset tileset_num)
+Tileset::Tileset
+(
+  NDSFile* ncg_file, 
+  std::vector<NDSFile*> ncl_files, 
+  NDSFile* pnl_file, 
+  NDSFile* unt_file, 
+  NDSFile* unt_hd_file,
+  TilesetOffset tileset_num
+)
 {
   _ncg = Reader(ncg_file->get_data()); //automatically decompresses
   _pnl = Reader(pnl_file->get_data());
   _unt = Reader(unt_file->get_data());
+  _unt_hd = Reader(unt_hd_file->get_data());
 
   _tileset_num = tileset_num;
 
@@ -12,7 +21,7 @@ Tileset::Tileset(NDSFile* ncg_file, std::vector<NDSFile*> ncl_files, NDSFile* pn
   load_palettes(ncl_files);
   load_tiles();
   load_map16();
-  //load_objects();
+  load_objects();
 }
 
 // load sizes
@@ -20,7 +29,7 @@ void Tileset::load_data()
 {
   _num_tiles = _ncg.size() / 64;
   _num_map16 = _pnl.size() / 8;
-  _num_objects = 0;
+  _num_objects = _unt_hd.size() / 4;
 
   switch (_tileset_num)
   {
@@ -72,12 +81,14 @@ void Tileset::load_tiles()
     _ncg.jump(0);
     for (int i = 0; i < 192; i++)
     {
-      std::vector<Color> t;
+      Tile tile;
+      std::vector<Color> pixels;
       for (u8 pixel : _ncg.get_vec(64))
       {
-        t.push_back(pal.colors[pixel]);
+        pixels.push_back(pal.colors[pixel]);
       }
-      _gfx_tiles.push_back(t); 
+      tile.pixels = pixels;
+      _gfx_tiles.push_back(tile); 
     }
   }
 }
@@ -92,6 +103,7 @@ void Tileset::load_map16()
     for (int j = 0; j < 4; j++)
     {
       u16 tile_index = _pnl.read<u16>() & 0x3FF - _map16_offset;
+      
       if (tile_index > _num_tiles)
       {
         EXIT("not enough tiles to fill map16. have you forgotten to load a palette?\n");
@@ -101,33 +113,22 @@ void Tileset::load_map16()
   }
 }
 
+// load objects with index file
 void Tileset::load_objects()
 {
-  // first load the number of objects.
-  _unt.jump(0);
-  for (u8 byte : _unt.get_buffer())
-  {
-    if (byte == ObjectControlByte::END) { _num_objects++; }
-  }
-  _objects.resize(_num_objects);
-
-  // now load the vectors
-  _unt.jump(0);
   for (int i = 0; i < _num_objects; i++)
   {
-    u8 byte = 0x00;
     Object obj;
-    while (byte != ObjectControlByte::END)
+    u16 address = _unt_hd.read<u16>();
+    obj.width = _unt_hd.read<u8>();
+    obj.height = _unt_hd.read<u8>(); 
+
+    _unt.jump(address);
+    for (u8 tile : _unt.read_until(ObjectControlByte::END))
     {
-      byte = _unt.read<u8>();
-      if (byte != ObjectControlByte::NEW_LINE)
+      if (tile != ObjectControlByte::NEW_LINE)
       {
-        obj.width++;
-        obj.tiles.push_back(_map16_tiles[byte]);
-      }
-      else
-      {
-        obj.height++;
+        obj.tiles.push_back(_map16_tiles[tile]);
       }
     }
     _objects.push_back(obj);

@@ -14,6 +14,8 @@ int main(int argc, char **argv)
   NDSFile* standard_pal1 = rom.file_from_path("/BG_ncl/d_2d_A_J_jyotyu_F_ncl.bin");
   NDSFile* standard_map16 = rom.file_from_path("/BG_pnl/d_2d_PA_A_J_jyotyu.bin");
   NDSFile* standard_objects = rom.file_from_path("/BG_unt/A_J_jyotyu.bin");
+  NDSFile* standard_index = rom.file_from_path("/BG_unt/A_J_jyotyu_hd.bin");
+
 
   Tileset tileset
   (
@@ -21,6 +23,7 @@ int main(int argc, char **argv)
     {standard_pal0, standard_pal1},
     standard_map16, 
     standard_objects, 
+    standard_index,
     TilesetOffset::TILESET0
   );
 }

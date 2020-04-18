@@ -111,6 +111,17 @@ void Reader::replace_vec(std::vector<u8> vec, int at)
   }
 }
 
+std::vector<u8> Reader::read_until(u8 stop)
+{
+  std::vector<u8> ret;
+  while (_buffer[_iter] != stop)
+  {
+    ret.push_back(_buffer[_iter]);
+    _iter++;
+  }
+  return ret;
+}
+
 std::vector<u8>& Reader::get_buffer()
 {
   return _buffer;
