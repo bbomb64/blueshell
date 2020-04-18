@@ -10,10 +10,19 @@
 
 int main(int argc, char **argv)
 {
+  if (sizeof(long) == 8)
+  {
+    print(":)");
+  }
+  else
+  {
+    EXIT(":(");
+  }
+
   Reader reader("/home/richards/Downloads/nsmb.nds");
   ROM rom(&reader, 0x00000000);
 
-  NDSFile* level1 = rom.file_from_path("/course/A02_1_bgdat.bin");
+  NDSFile* level1 = rom.file_from_path("/course/A01_1_bgdat.bin");
 
   Tileset tileset0
   (
@@ -44,7 +53,7 @@ int main(int argc, char **argv)
 
   Graphics gfx = Graphics
   (
-    {&tileset0, &tileset1, &tileset0}
+    {&tileset0, &tileset0, &tileset0}
   );
 
   Level level(level1, &gfx);
