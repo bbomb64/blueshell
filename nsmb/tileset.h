@@ -9,8 +9,6 @@
 struct Palette
 {
   std::vector<Color> colors;
-
-  Palette() {};
 };
 
 struct Tile
@@ -19,15 +17,11 @@ struct Tile
   int use_pal;
   bool h_flip;
   bool v_flip;
-
-  Tile() {};
 };
 
 struct Map16Tile
 {
   std::vector<Tile> tiles;
-
-  Map16Tile() {};
 };
 
 struct Object
@@ -35,8 +29,6 @@ struct Object
   int width = 0;
   int height = 0;
   std::vector<Map16Tile> tiles;
-
-  Object() {};
 };
 
 class Tileset

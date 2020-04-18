@@ -3,27 +3,69 @@
 #include "reader.h"
 #include "util.h"
 #include "nsmb/tileset.h"
+#include "nsmb/level.h"
+#include "ui/levelview.h"
+#include "nsmb/graphics.h"
+#include <gtkmm.h>
 
 int main(int argc, char **argv)
 {
-  Reader reader(argv[1]);
+  Reader reader("/home/richards/Downloads/nsmb.nds");
   ROM rom(&reader, 0x00000000);
 
-  NDSFile* standard_tiles = rom.file_from_path("/BG_ncg/d_2d_A_J_jyotyu_ncg.bin"); // /BG_ncg/d_2d_A_J_jyotyu_ncg.bin"
-  NDSFile* standard_pal0 = rom.file_from_path("/BG_ncl/d_2d_A_J_jyotyu_ncl.bin");
-  NDSFile* standard_pal1 = rom.file_from_path("/BG_ncl/d_2d_A_J_jyotyu_F_ncl.bin");
-  NDSFile* standard_map16 = rom.file_from_path("/BG_pnl/d_2d_PA_A_J_jyotyu.bin");
-  NDSFile* standard_objects = rom.file_from_path("/BG_unt/A_J_jyotyu.bin");
-  NDSFile* standard_index = rom.file_from_path("/BG_unt/A_J_jyotyu_hd.bin");
+  NDSFile* level1 = rom.file_from_path("/course/A02_1_bgdat.bin");
 
-
-  Tileset tileset
+  Tileset tileset0
   (
-    standard_tiles, 
-    {standard_pal0, standard_pal1},
-    standard_map16, 
-    standard_objects, 
-    standard_index,
+    rom.file_from_path("/BG_ncg/d_2d_A_J_jyotyu_ncg.bin"), 
+    {
+      rom.file_from_path("/BG_ncl/d_2d_A_J_jyotyu_ncl.bin"), 
+      rom.file_from_path("/BG_ncl/d_2d_A_J_jyotyu_F_ncl.bin")
+    },
+    rom.file_from_path("/BG_pnl/d_2d_PA_A_J_jyotyu.bin"), 
+    rom.file_from_path("/BG_unt/A_J_jyotyu.bin"), 
+    rom.file_from_path("/BG_unt/A_J_jyotyu_hd.bin"),
     TilesetOffset::TILESET0
   );
+
+  Tileset tileset1
+  (
+    rom.file_from_path("/BG_ncg/d_2d_I_M_tikei_nohara_ncg.bin"), 
+    {
+      rom.file_from_path("/BG_ncl/d_2d_I_M_tikei_nohara_ncl.bin"), 
+      rom.file_from_path("/BG_ncl/d_2d_I_M_tikei_nohara_ncl.bin"),
+      rom.file_from_path("/BG_ncl/d_2d_I_M_tikei_nohara_ncl.bin")
+    },
+    rom.file_from_path("/BG_pnl/d_2d_PA_I_M_nohara2.bin"), 
+    rom.file_from_path("/BG_unt/I_M_nohara.bin"), 
+    rom.file_from_path("/BG_unt/I_M_nohara_hd.bin"),
+    TilesetOffset::TILESET1
+  );
+
+  Graphics gfx = Graphics
+  (
+    {&tileset0, &tileset1, &tileset0}
+  );
+
+  Level level(level1, &gfx);
+
+  auto app = Gtk::Application::create(argc, argv, "org.gtkmm.example");
+
+  Gtk::Window window;
+  window.set_size_request(800, 600);
+  window.set_title("my demise");
+
+  LevelView view = LevelView(&level);
+  
+  Gtk::ScrolledWindow frame;
+  frame.set_border_width(20);
+  frame.set_shadow_type(Gtk::ShadowType::SHADOW_ETCHED_IN);
+
+  view.set_size_request(32 * 256, 16 * 16 * 16);
+  
+  window.add(frame);
+  frame.add(view);
+  window.show_all_children();
+
+  return app->run(window);
 }

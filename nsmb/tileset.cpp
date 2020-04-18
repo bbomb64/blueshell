@@ -126,8 +126,12 @@ void Tileset::load_objects()
     _unt.jump(address);
     for (u8 tile : _unt.read_until(ObjectControlByte::END))
     {
-      if (tile != ObjectControlByte::NEW_LINE)
+      if (tile != ObjectControlByte::NEW_LINE && tile != 0x00)
       {
+        if (tile > _map16_tiles.size())
+        {
+          EXIT("not enough map 16 tiles to fill objects!");
+        }
         obj.tiles.push_back(_map16_tiles[tile]);
       }
     }
