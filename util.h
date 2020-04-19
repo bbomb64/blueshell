@@ -6,7 +6,7 @@
 #include <string>
 #include "type.h"
 #include "enums.h"
-#include "nsmb/color.h"
+#include "nsmb/graphics/color.h"
 
 #ifdef _DEBUG
 #define DEBUG(...)                        \

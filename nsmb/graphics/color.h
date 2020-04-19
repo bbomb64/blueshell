@@ -1,7 +1,7 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-#include "../type.h"
+#include "../../type.h"
 
 class Color
 {
@@ -15,6 +15,7 @@ private:
 
   void to_short(u8& _r, u8& _g, u8& _b)
   {
+
   }
 
 public:
@@ -23,7 +24,8 @@ public:
   u8 b = 0x00;
   u16 code = 0x00;
 
-  Color() {};
+  Color() {}
+
   Color(u16 color_code)
   {
     code = color_code;

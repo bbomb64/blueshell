@@ -2,54 +2,23 @@
 #include "rom.h"
 #include "reader.h"
 #include "util.h"
-#include "nsmb/tileset.h"
-#include "nsmb/level.h"
-#include "ui/levelview.h"
-#include "nsmb/graphics.h"
-#include <gtkmm.h>
+#include "nsmb/graphics/palette.h"
 
 int main(int argc, char **argv)
 {
-  Reader reader("/home/richards/Downloads/nsmb.nds");
+  Reader reader(argv[1]);
   ROM rom(&reader, 0x00000000);
 
-  NDSFile* level_file = rom.file_from_path("/course/A01_1_bgdat.bin");
+  NDSFile* jyotyu_pal = rom.file_from_id(409);
 
-  Tileset tileset0
-  (
-    rom.file_from_path("/BG_ncg/d_2d_A_J_jyotyu_ncg.bin"), 
-    {
-      rom.file_from_path("/BG_ncl/d_2d_A_J_jyotyu_ncl.bin"), 
-      rom.file_from_path("/BG_ncl/d_2d_A_J_jyotyu_F_ncl.bin")
-    },
-    rom.file_from_path("/BG_pnl/d_2d_PA_A_J_jyotyu.bin"), 
-    rom.file_from_path("/BG_unt/A_J_jyotyu.bin"), 
-    rom.file_from_path("/BG_unt/A_J_jyotyu_hd.bin"),
-    TilesetOffset::TILESET0
-  );
+  Palette pal(jyotyu_pal);
 
-  Graphics graphics = Graphics
-  (
-    {&tileset0, &tileset0, &tileset0}
-  );
-
-  auto app = Gtk::Application::create(argc, argv, "org.gtkmm.example");
-
-  Gtk::Window window;
-  window.set_size_request(800, 600);
-  window.set_title("my demise");
-
-  LevelView view = LevelView(&tileset0);
-  
-  Gtk::ScrolledWindow frame;
-  frame.set_border_width(20);
-  frame.set_shadow_type(Gtk::ShadowType::SHADOW_ETCHED_IN);
-
-  view.set_size_request(32 * 512, 16 * 16 * 16);
-  
-  window.add(frame);
-  frame.add(view);
-  window.show_all_children();
-
-  return app->run(window);;
+  if (pal.is_extended())
+  {
+    print("this palette is extended!");
+  }
+  else
+  {
+    print("this palette is normal.");
+  }
 }
