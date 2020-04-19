@@ -2532,7 +2532,7 @@ XMLPrinter::XMLPrinter( FILE* file, bool compact, int depth ) :
     }
     _restrictedEntityFlag[static_cast<unsigned char>('&')] = true;
     _restrictedEntityFlag[static_cast<unsigned char>('<')] = true;
-    _restrictedEntityFlag[static_cast<unsigned char>('>')] = true;	// not required, but consistency is Object
+    _restrictedEntityFlag[static_cast<unsigned char>('>')] = true;	// not required, but consistency is TilesetObject
     _buffer.Push( 0 );
 }
 

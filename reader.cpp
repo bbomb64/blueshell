@@ -147,6 +147,11 @@ int Reader::where()
   return _iter;
 }
 
+bool Reader::is_end()
+{
+  return _iter >= _buffer.size();
+}
+
 int Reader::size()
 {
   return _filesize;

@@ -118,23 +118,44 @@ void Tileset::load_objects()
 {
   for (int i = 0; i < _num_objects; i++)
   {
-    Object obj;
+    // 00 01 00 FE (FF)
+    TilesetObject obj;
     u16 address = _unt_hd.read<u16>();
-    obj.width = _unt_hd.read<u8>();
-    obj.height = _unt_hd.read<u8>(); 
+    obj.width = 0; 
+    obj.height = 0;
+    // are unused, hence why the skip(2)
+    _unt_hd.skip(2);
 
+    // read each object
     _unt.jump(address);
-    for (u8 tile : _unt.read_until(ObjectControlByte::END))
+    std::vector<Map16Tile> row;
+    Reader obj_data(_unt.read_until(ObjectControlByte::END));
     {
-      if (tile != ObjectControlByte::NEW_LINE && tile != 0x00)
+      while(!obj_data.is_end())
       {
-        if (tile > _map16_tiles.size())
+        u8 c = obj_data.read<u8>();
+        print_hex(c);
+        if (c != ObjectControlByte::NEW_LINE)
         {
-          EXIT("not enough map 16 tiles to fill objects!");
+          if (c >= 0x80)
+          {
+            print("passing...");
+          }
+          else
+          {
+            u16 index = obj_data.read<u16>();
+            row.push_back(_map16_tiles[index]);
+            obj.width = row.size();
+          }
         }
-        obj.tiles.push_back(_map16_tiles[tile]);
+        else
+        {
+          obj.grid.push_back(row);
+          obj.height = obj.grid.size();
+          row.clear();
+        }
       }
-    }
+    }  
     _objects.push_back(obj);
   }
 }
@@ -154,7 +175,7 @@ Map16Tile& Tileset::get_map16_tile(int i)
   return _map16_tiles[i];
 }
 
-Object& Tileset::get_object(int i)
+TilesetObject& Tileset::get_object(int i)
 {
   return _objects[i];
 }

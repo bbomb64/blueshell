@@ -10,19 +10,10 @@
 
 int main(int argc, char **argv)
 {
-  if (sizeof(long) == 8)
-  {
-    print(":)");
-  }
-  else
-  {
-    EXIT(":(");
-  }
-
   Reader reader("/home/richards/Downloads/nsmb.nds");
   ROM rom(&reader, 0x00000000);
 
-  NDSFile* level1 = rom.file_from_path("/course/A01_1_bgdat.bin");
+  NDSFile* level_file = rom.file_from_path("/course/A01_1_bgdat.bin");
 
   Tileset tileset0
   (
@@ -37,26 +28,10 @@ int main(int argc, char **argv)
     TilesetOffset::TILESET0
   );
 
-  Tileset tileset1
-  (
-    rom.file_from_path("/BG_ncg/d_2d_I_M_tikei_nohara_ncg.bin"), 
-    {
-      rom.file_from_path("/BG_ncl/d_2d_I_M_tikei_nohara_ncl.bin"), 
-      rom.file_from_path("/BG_ncl/d_2d_I_M_tikei_nohara_ncl.bin"),
-      rom.file_from_path("/BG_ncl/d_2d_I_M_tikei_nohara_ncl.bin")
-    },
-    rom.file_from_path("/BG_pnl/d_2d_PA_I_M_nohara2.bin"), 
-    rom.file_from_path("/BG_unt/I_M_nohara.bin"), 
-    rom.file_from_path("/BG_unt/I_M_nohara_hd.bin"),
-    TilesetOffset::TILESET1
-  );
-
-  Graphics gfx = Graphics
+  Graphics graphics = Graphics
   (
     {&tileset0, &tileset0, &tileset0}
   );
-
-  Level level(level1, &gfx);
 
   auto app = Gtk::Application::create(argc, argv, "org.gtkmm.example");
 
@@ -64,17 +39,17 @@ int main(int argc, char **argv)
   window.set_size_request(800, 600);
   window.set_title("my demise");
 
-  LevelView view = LevelView(&level);
+  LevelView view = LevelView(&tileset0);
   
   Gtk::ScrolledWindow frame;
   frame.set_border_width(20);
   frame.set_shadow_type(Gtk::ShadowType::SHADOW_ETCHED_IN);
 
-  view.set_size_request(32 * 256, 16 * 16 * 16);
+  view.set_size_request(32 * 512, 16 * 16 * 16);
   
   window.add(frame);
   frame.add(view);
   window.show_all_children();
 
-  return app->run(window);
+  return app->run(window);;
 }

@@ -7,7 +7,7 @@
 
 struct LevelObject
 {
-  Object obj;
+  TilesetObject obj;
   int x;
   int y;
   int width;

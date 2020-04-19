@@ -66,6 +66,7 @@ public:
   void skip(int i);
   void jump(int to);
   int where();
+  bool is_end();
 
   int size();
   void set_Endian(Endian Endian);

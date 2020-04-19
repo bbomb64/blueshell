@@ -641,7 +641,7 @@ private:
 
 
 /** XMLNode is a base class for every object that is in the
-	XML Document Object Model (DOM), except XMLAttributes.
+	XML Document TilesetObject Model (DOM), except XMLAttributes.
 	Nodes have siblings, a parent, and children which can
 	be navigated. A node is always in a XMLDocument.
 	The type of a XMLNode can be queried, and it can

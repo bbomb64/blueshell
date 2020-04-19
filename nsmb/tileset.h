@@ -24,11 +24,11 @@ struct Map16Tile
   std::vector<Tile> tiles;
 };
 
-struct Object
+struct TilesetObject
 {
   int width = 0;
   int height = 0;
-  std::vector<Map16Tile> tiles;
+  std::vector<std::vector<Map16Tile>> grid;
 };
 
 class Tileset
@@ -50,7 +50,7 @@ private:
   std::vector<Palette> _palettes;
   std::vector<Tile> _gfx_tiles;
   std::vector<Map16Tile> _map16_tiles;
-  std::vector<Object> _objects;
+  std::vector<TilesetObject> _objects;
 
   void load_data();
   void load_palettes(std::vector<NDSFile*> pal_files);
@@ -73,7 +73,7 @@ public:
   Palette& get_palette(int i);
   Tile& get_tile(int i);
   Map16Tile& get_map16_tile(int i);
-  Object& get_object(int i);
+  TilesetObject& get_object(int i);
 };
 
 #endif

@@ -10,7 +10,7 @@ Level::Level(NDSFile* bgdat_file, Graphics* gfx)
   _gfx = gfx;
 
   load_data();
-  load_objects();
+  //load_objects();
 }
 
 void Level::load_data()
