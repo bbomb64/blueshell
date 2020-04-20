@@ -60,11 +60,13 @@ public:
   std::string get_string(int size);
   std::vector<u8> get_vec(int size);
   void replace_vec(std::vector<u8> vec, int at);
+  std::vector<u8> read_until(u8 stop);
 
   void reset();
   void skip(int i);
   void jump(int to);
   int where();
+  bool is_end();
 
   int size();
   void set_Endian(Endian Endian);
