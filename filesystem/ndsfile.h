@@ -2,7 +2,7 @@
 #define NDSFILE_H
 
 #include <fstream>
-#include "reader.h"
+#include "../util/reader.h"
 #include "compressor.h"
 
 class NDSFile

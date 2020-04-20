@@ -363,7 +363,7 @@ int Compressor::compress_yaz0()
 int Compressor::decompress_yaz0()
 {
   Reader src_r(_data);
-  src_r.set_Endian(Endian::BIG);
+  src_r.set_endian(Endian::BIG);
   if (src_r.get_string(4) != "Yaz0")
   {
     WARNING("file is not Yaz0 compressed\n");

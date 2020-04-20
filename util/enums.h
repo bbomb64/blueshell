@@ -22,11 +22,17 @@ enum ObjectControlByte
   NEW_LINE = 0xFE  
 };
 
+enum PaletteType
+{
+  EXTENDED = 256,
+  NORMAL_16 = 16
+};
+
 enum TilesetOffset
 {
-  TILESET0,
-  TILESET1,
-  TILESET2
+  TILESET_0,
+  TILESET_1,
+  TILESET_2
 };
 
 #endif

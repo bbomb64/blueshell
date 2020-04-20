@@ -6,7 +6,7 @@
 #include <string>
 #include "type.h"
 #include "enums.h"
-#include "nsmb/graphics/color.h"
+#include "../nsmb/graphics/color.h"
 
 #ifdef _DEBUG
 #define DEBUG(...)                        \
@@ -52,14 +52,16 @@ void print_vec_hex(std::vector<T> const& v, u32 width = 16)
   for (auto i : v)
   {
     if ((c % width) == 0 && c != 0)
+    {
       printf("\n");
+    }
     printf("%02X ", i);
     c++;
   }
   printf("\n");
 };
 
-// print a vector as a sequence of ascii characters
+// print a vector as a sequence of ASCII characters
 template <typename T>
 void print_vec_string(std::vector<T> const& v)
 {
@@ -72,7 +74,7 @@ void print_vec_string(std::vector<T> const& v)
 template <typename T>
 void print_hex(T const& t)
 {
-  printf("0x%x", t);
+  printf("0x%02X", t);
   printf("\n");
 };
 
