@@ -24,6 +24,19 @@ void Pixmap::fill()
   }
 }
 
+// check if given coords are OOB
+bool Pixmap::out_of_bounds(int x, int y)
+{
+  if (x > _width || y > _height)
+  {
+    return true;
+  }
+  else 
+  {
+    return false;
+  }
+}
+
 //return width
 int Pixmap::width()
 {
@@ -39,13 +52,24 @@ int Pixmap::height()
 // get color of said pixel (may change function name)
 Color Pixmap::get_pixel(int x, int y)
 {
-  return _buffer[x][y];
+  if (!out_of_bounds(x, y))
+  {
+    return _buffer[x][y];
+  }
+  else
+  {
+    WARNING("WARNING: given coords are out of bounds, returning black!\n");
+    return Color(0, 0, 0);
+  }
 }
 
 // set pixel with specified color
 void Pixmap::set_pixel(int x, int y, Color color)
 {
-  _buffer[x][y] = color;
+  if (!out_of_bounds(x, y))
+  {
+    _buffer[x][y] = color;
+  }
 }
 
 // wrapper around the existing fill function

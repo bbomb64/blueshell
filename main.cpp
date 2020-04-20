@@ -23,7 +23,11 @@ int main(int argc, char **argv)
   Pixmap pixmap(64, 64, Color(255, 0, 255));
   pixmap.set_pixel(19, 23, Color(100, 34, 1));
   
+  // print in-bounds pixel
   print_color(pixmap.get_pixel(19, 23));
+  
+  // now test OOB
+  print_color(pixmap.get_pixel(100, 100));
     
   return 0;
 }

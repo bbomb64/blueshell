@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "../nsmb/graphics/color.h"
+#include "util.h"
 
 class Pixmap
 {
@@ -13,6 +14,7 @@ private:
   Color _clear_color;
   
   void fill();
+  bool out_of_bounds(int x, int y);
   
 public:
   Pixmap();
