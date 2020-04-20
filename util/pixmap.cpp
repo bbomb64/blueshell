@@ -78,4 +78,3 @@ void Pixmap::clear(Color clear_color)
   _clear_color = clear_color;
   fill();
 }
-

@@ -7,12 +7,12 @@
 
 int main(int argc, char **argv)
 {
-  if (argc < 1)
+  if (argc < 2)
   {
     EXIT("please pass a ROM file.");
   }
   
-  Reader reader("/home/richards/Downloads/nsmb.nds");
+  Reader reader(argv[1]);
   ROM rom(&reader, 0x00000000);
 
   NDSFile* jyotyu_pal = rom.file_from_id(409);
