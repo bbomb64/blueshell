@@ -1,7 +1,7 @@
 #ifndef FAT_H
 #define FAT_H
 
-#include "reader.h"
+#include "../util/reader.h"
 #include "ndsfile.h"
 
 class FAT

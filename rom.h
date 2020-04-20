@@ -1,16 +1,16 @@
 #ifndef ROM_H
 #define ROM_H
 
-#include "type.h"
-#include "reader.h"
 #include <iostream>
 #include <map>
 #include <vector>
-#include "util.h"
-#include "fnt.h"
-#include "fat.h"
-#include "ovt.h"
-#include "ndsfile.h"
+#include "util/type.h"
+#include "util/reader.h"
+#include "util/util.h"
+#include "filesystem/fnt.h"
+#include "filesystem/fat.h"
+#include "filesystem/ovt.h"
+#include "filesystem/ndsfile.h"
 
 class ROM
 {

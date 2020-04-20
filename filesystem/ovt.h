@@ -1,7 +1,7 @@
 #ifndef OVT_H
 #define OVT_H
 
-#include "reader.h"
+#include "../util/reader.h"
 #include "ndsfile.h"
 
 class OVT 

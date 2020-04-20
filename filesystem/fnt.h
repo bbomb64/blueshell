@@ -1,10 +1,10 @@
 #ifndef FNT_H
 #define FNT_H
 
-#include "reader.h"
-#include "util.h"
-#include "type.h"
 #include <map>
+#include "../util/reader.h"
+#include "../util/util.h"
+#include "../util/type.h"
 
 class FNT
 {

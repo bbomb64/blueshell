@@ -4,6 +4,7 @@
 class Tilemap
 {
 private:
+  
 
 public:
   Tilemap() {}

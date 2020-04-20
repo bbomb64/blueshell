@@ -2,9 +2,9 @@
 #define COMPRESSOR_H
 
 #include <vector>
-#include "enums.h"
-#include "type.h"
-#include "reader.h"
+#include "../util/enums.h"
+#include "../util/type.h"
+#include "../util/reader.h"
 
 #define _LZ77_SYMBOL 0x10
 #define _LZ77_HEADER 0x37375A4C
