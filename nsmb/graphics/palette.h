@@ -24,6 +24,7 @@ public:
   Palette(Color fill_color, PaletteType type);
 
   Color color_at(int palette, int i);
+
   void fill_with(Color color);
   bool is_extended();
 };

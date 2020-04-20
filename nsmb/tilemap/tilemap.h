@@ -5,9 +5,8 @@ class Tilemap
 {
 private:
   
-
 public:
-  Tilemap() {}
+  Tilemap();
 
   struct Tile;
 };
