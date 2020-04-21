@@ -1,31 +1,29 @@
 #include <iostream>
 #include "rom.h"
-#include "reader.h"
-#include "util.h"
-#include "tinyxml/tinyxml2.h"
-#include "csv/csv.hpp"
+#include "util/reader.h"
+#include "util/util.h"
+#include "nsmb/graphics/palette.h"
+#include "util/pixmap.h"
 
 int main(int argc, char **argv)
 {
-  if (argc > 1) 
+  if (argc < 1)
   {
-    Reader reader(argv[1]);
-    ROM rom(&reader, 0x00000000);
-
-    int id = rom.fnt.file_id_of(argv[2]);
-
-    if (id <  0)
-    {
-      print("file not found");
-    }
-    else
-    {
-      print(id);
-    }
-
+    EXIT("please pass a ROM file.");
   }
-  else 
-  {
-    print("please pass a .nds rom file");
-  }
+  
+  Reader reader("/home/richards/Downloads/nsmb.nds");
+  ROM rom(&reader, 0x00000000);
+
+  NDSFile* jyotyu_pal = rom.file_from_id(409);
+
+  Palette pal(jyotyu_pal, PaletteType::EXTENDED); // jyotyu is extended
+  
+  // pixmap testing
+  Pixmap pixmap(64, 64, Color(255, 0, 255));
+  pixmap.set_pixel(19, 23, Color(100, 34, 1));
+  
+  print_color(pixmap.get_pixel(19, 23));
+    
+  return 0;
 }

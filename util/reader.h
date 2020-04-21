@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include "enums.h"
 
 class Reader
 {
@@ -15,8 +16,9 @@ private:
   std::vector<u8> _buffer;
   int _filesize;
   int _iter = 0;
+  Endian _endian = Endian::LITTLE;
 
-  void load();
+  void load_file();
   bool load_buffer();
 
 public:
@@ -26,27 +28,48 @@ public:
   void change_to(std::string filename);
   void change_to(std::vector<u8> chunk);
 
+  std::vector<u8>& get_buffer();
+
   template<class T>
-  inline T read() 
+  inline T read()
   {
     T ret = 0;
-    for (int i = 0; i < sizeof(T); i++)
+    if (_endian == Endian::LITTLE)
     {
-      ret += (_buffer[_iter + i] << 8 * i);
+      for (int i = 0; i < sizeof(T); i++)
+      {
+        ret += (_buffer[_iter + i] << 8 * i);
+      }
+    }
+    else
+    {
+      for (int i = 0; i < sizeof(T); i++)
+      {
+        int j = (sizeof(T) - i) - 1;
+        ret += (_buffer[_iter + i] << 8 * j);
+      }
     }
     _iter += sizeof(T);
 
     return ret;
   }
 
+  u8& at(int index);
+  u8& operator[](int index);
+
   std::string get_string(int size);
   std::vector<u8> get_vec(int size);
-  std::vector<u8>& get_buffer();
-  void skip(int i);
+  void replace_vec(std::vector<u8> vec, int at);
+  std::vector<u8> read_until(u8 stop);
+
   void reset();
+  void skip(int i);
   void jump(int to);
   int where();
-  int get_size();
+  bool is_end();
+
+  int size();
+  void set_endian(Endian endianess);
 };
 
 #endif

@@ -1,13 +1,16 @@
 #ifndef ROM_H
 #define ROM_H
 
-#include "type.h"
-#include "reader.h"
 #include <iostream>
 #include <map>
 #include <vector>
-#include "util.h"
-#include "fnt.h"
+#include "util/type.h"
+#include "util/reader.h"
+#include "util/util.h"
+#include "filesystem/fnt.h"
+#include "filesystem/fat.h"
+#include "filesystem/ovt.h"
+#include "filesystem/ndsfile.h"
 
 class ROM
 {
@@ -47,6 +50,9 @@ private:
 
   void load_header();
   void load_fnt();
+  void load_fat();
+  void load_arm7ovt();
+  void load_arm9ovt();
 
 public:
   ROM(Reader* reader, int begins_at);
@@ -93,7 +99,13 @@ public:
   u32 debug_raddr;
 
   FNT fnt;
+  FAT fat;
+  OVT arm7ovt;
+  OVT arm9ovt;
   
+  NDSFile* file_from_path(std::string path);
+  NDSFile* file_from_id(int id);
+
   std::string get_region_string();
 };
 

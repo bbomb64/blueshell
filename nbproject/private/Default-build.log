@@ -1,0 +1,17 @@
+g++ -m64 -std=c++1y *.cpp ./nsmb/*/*.cpp -o ./build/ndsfilebrowser `pkg-config gtkmm-3.0 --cflags --libs` -D _DEBUG
+./nsmb/graphics/palette.cpp: In member function ‘void Palette::fill(Color)’:
+./nsmb/graphics/palette.cpp:41:5: error: ‘_colors’ was not declared in this scope; did you mean ‘color’?
+   41 |     _colors.push_back(fill_color);
+      |     ^~~~~~~
+      |     color
+./nsmb/graphics/palette.cpp: In member function ‘Color Palette::color(int)’:
+./nsmb/graphics/palette.cpp:48:10: error: ‘_colors’ was not declared in this scope; did you mean ‘color’?
+   48 |   return _colors[i];
+      |          ^~~~~~~
+      |          color
+./nsmb/graphics/palette.cpp: In member function ‘bool Palette::is_extended()’:
+./nsmb/graphics/palette.cpp:60:16: error: invalid use of member function ‘int Reader::size()’ (did you forget the ‘()’ ?)
+   60 |   return _file.size > 0x200;
+      |          ~~~~~~^~~~
+      |                    ()
+make: *** [Makefile:2: all] Error 1

@@ -2,6 +2,14 @@
 
 FNT::FNT()
 {
+  _reader = nullptr;
+  _begins_at = 0;
+  _size = 0;
+
+  _first_fid = 0;
+  _num_dir = 0;
+  _num_dir_in_root = 0;
+  _sub_offset = 0;
 }
 
 FNT::FNT(Reader* reader, int begins_at, int size)
@@ -93,7 +101,7 @@ bool FNT::is_end()
 
 void FNT::iterate()
 {
-  for(int i = 0; _num_dir_in_root; i++)
+  for(int i = 0; i < _num_dir_in_root; i++)
   {
     load_sub(i + 0xf000);
   }

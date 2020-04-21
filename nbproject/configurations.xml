@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="100">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <df name="filesystem">
+        <in>compressor.cpp</in>
+        <in>fat.cpp</in>
+        <in>fnt.cpp</in>
+        <in>ovt.cpp</in>
+      </df>
+      <df name="nsmb">
+        <df name="graphics">
+          <in>palette.cpp</in>
+        </df>
+        <df name="tilemap">
+          <in>tilemap.cpp</in>
+        </df>
+      </df>
+      <df name="util">
+        <in>pixmap.cpp</in>
+        <in>pixmap.h</in>
+        <in>reader.cpp</in>
+        <in>util.cpp</in>
+      </df>
+      <in>main.cpp</in>
+      <in>rom.cpp</in>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+      <itemPath>nbproject/private/launcher.properties</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <flagsDictionary>
+        <element flagsID="0" commonFlags="-m64 -std=c++1y"/>
+      </flagsDictionary>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath>build/ndsfilebrowser</executablePath>
+          <ccTool>
+            <incDir>
+              <pElem>/usr/include/gtkmm-3.0</pElem>
+              <pElem>/usr/lib/gtkmm-3.0/include</pElem>
+              <pElem>/usr/include/atkmm-1.6</pElem>
+              <pElem>/usr/include/atk-1.0</pElem>
+              <pElem>/usr/include/glib-2.0</pElem>
+              <pElem>/usr/lib/glib-2.0/include</pElem>
+              <pElem>/usr/include/glibmm-2.4</pElem>
+              <pElem>/usr/lib/glibmm-2.4/include</pElem>
+              <pElem>/usr/include/sigc++-2.0</pElem>
+              <pElem>/usr/lib/sigc++-2.0/include</pElem>
+              <pElem>/usr/include/giomm-2.4</pElem>
+              <pElem>/usr/lib/giomm-2.4/include</pElem>
+              <pElem>/usr/include/libmount</pElem>
+              <pElem>/usr/include/blkid</pElem>
+              <pElem>/usr/include/pangomm-1.4</pElem>
+              <pElem>/usr/lib/pangomm-1.4/include</pElem>
+              <pElem>/usr/include/cairomm-1.0</pElem>
+              <pElem>/usr/lib/cairomm-1.0/include</pElem>
+              <pElem>/usr/include/cairo</pElem>
+              <pElem>/usr/include/pixman-1</pElem>
+              <pElem>/usr/include/freetype2</pElem>
+              <pElem>/usr/include/libpng16</pElem>
+              <pElem>/usr/include/harfbuzz</pElem>
+              <pElem>/usr/include/uuid</pElem>
+              <pElem>/usr/include/pango-1.0</pElem>
+              <pElem>/usr/include/fribidi</pElem>
+              <pElem>/usr/include/gtk-3.0</pElem>
+              <pElem>/usr/include/gdk-pixbuf-2.0</pElem>
+              <pElem>/usr/include/gio-unix-2.0</pElem>
+              <pElem>/usr/include/at-spi2-atk/2.0</pElem>
+              <pElem>/usr/include/dbus-1.0</pElem>
+              <pElem>/usr/lib/dbus-1.0/include</pElem>
+              <pElem>/usr/include/at-spi-2.0</pElem>
+              <pElem>/usr/include/gtk-3.0/unix-print</pElem>
+              <pElem>/usr/include/gdkmm-3.0</pElem>
+              <pElem>/usr/lib/gdkmm-3.0/include</pElem>
+            </incDir>
+            <preprocessorList>
+              <Elem>_DEBUG</Elem>
+            </preprocessorList>
+          </ccTool>
+        </makeTool>
+        <preBuild>
+          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
+          <preBuildCommand></preBuildCommand>
+        </preBuild>
+      </makefileType>
+      <folder path="0/filesystem">
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/nsmb">
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/util">
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <item path="filesystem/compressor.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="filesystem/fat.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="filesystem/fnt.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="filesystem/ovt.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="nsmb/graphics/palette.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="nsmb/tilemap/tilemap.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="rom.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="util/pixmap.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="util/pixmap.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="util/reader.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="util/util.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
