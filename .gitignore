@@ -1,8 +1,4 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/x64/Release/ndsfilebrowser.vcxprojAssemblyReference.cache
+﻿/x64/Release/ndsfilebrowser.vcxprojAssemblyReference.cache
 /ndsfilebrowser.vcxproj.user
 /ndsfilebrowser.vcxproj.filters
 /ndsfilebrowser.vcxproj
@@ -12,3 +8,4 @@
 /main.cpp
 /.vscode
 /images
+.nbproject/

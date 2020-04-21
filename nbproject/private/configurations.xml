@@ -28,6 +28,8 @@
       </df>
       <df name="util">
         <in>enums.h</in>
+        <in>pixmap.cpp</in>
+        <in>pixmap.h</in>
         <in>reader.cpp</in>
         <in>reader.h</in>
         <in>type.h</in>
