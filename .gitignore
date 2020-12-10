@@ -1,0 +1,8 @@
+bin/
+build/
+obj/
+util/
+bseditor.cbp
+bseditor.depend
+bseditor.layout
+
