@@ -1,2 +1,2 @@
-# ndsfilebrowser
-A file browser for Nintendo DS and DSi games.
+# blueshell
+A new-aged cross platform level editor+ for NSMB (Nintendo DS). 
